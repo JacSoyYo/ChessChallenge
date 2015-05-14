@@ -89,9 +89,9 @@ public class ChessChallenge {
         List<Integer> threatenedSquares = new ArrayList<>();
         switch (piece){
             case "K":
-                for (int i = row - 1; i < row + 2; i++){
+                for (int i = row - 1; i < row + 2 && i < rows; i++){
                     if (i >= 0) {
-                        for (int j = column - 1; j < column + 2; j++) {
+                        for (int j = column - 1; j < column + 2 && j < columns; j++) {
                             if (j >= 0) {
                                 threatenedSquares.add(j + i * columns);
                             }
@@ -102,8 +102,30 @@ public class ChessChallenge {
             case "Q":
                 break;
             case "B":
+                for (int i = row; i < rows; i++){
+                    for (int j = column; j < columns; j++){
+                        threatenedSquares.add(j + i * columns);
+                    }
+                    for (int j = column; j >= 0; j--){
+                        threatenedSquares.add(j + i * columns);
+                    }
+                }
+                for (int i = row; i >= 0; i--){
+                    for (int j = column; j < columns; j++){
+                        threatenedSquares.add(j + i * columns);
+                    }
+                    for (int j = column; j >= 0; j--){
+                        threatenedSquares.add(j + i * columns);
+                    }
+                }
                 break;
             case "R":
+                for (int i = 0; i < columns; i++){
+                    threatenedSquares.add(i + row * columns);
+                }
+                for (int i = 0; i < rows; i++){
+                    threatenedSquares.add(column + i * columns);
+                }
                 break;
             case "N":
                 break;
