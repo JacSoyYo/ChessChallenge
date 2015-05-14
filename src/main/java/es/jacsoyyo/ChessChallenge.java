@@ -10,9 +10,9 @@ public class ChessChallenge {
     public static void main(String[] args) {
         // Init
         // TODO read parameters
-        int rows = 3;
-        int columns = 3;
-        List<String> pieces = new ArrayList<>(Arrays.asList("R", "R", "R"));
+        int rows = 4;
+        int columns = 4;
+        List<String> pieces = new ArrayList<>(Arrays.asList("R", "R", "N", "N", "N", "N"));
 
         ChessChallenge chessChallenge = new ChessChallenge(rows, columns, pieces);
 
@@ -100,6 +100,8 @@ public class ChessChallenge {
                 }
                 break;
             case "Q":
+                threatenedSquares.addAll(threatenedSquares("R", position));
+                threatenedSquares.addAll(threatenedSquares("B", position));
                 break;
             case "B":
                 for (int i = row; i < rows; i++){
