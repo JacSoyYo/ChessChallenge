@@ -43,7 +43,7 @@ public class ChessChallenge {
         List<Integer> occupiedSquares = new ArrayList<>(pieces.size());
 
         Map<Integer, String> candidate = new HashMap<>(pieces.size());
-        List<Map<Integer, String>> solutions = new ArrayList<>();
+        Set<Map<Integer, String>> solutions = new HashSet<>();
 
         // Try to place every piece on every square
         placePieces(pieces, safeSquares, occupiedSquares, candidate, solutions);
@@ -57,7 +57,7 @@ public class ChessChallenge {
         }
     }
 
-    private void placePieces(List<String> pieces, List<Integer> safeSquares, List<Integer> occupiedSquares, Map<Integer, String> candidate, List<Map<Integer, String>> solutions) {
+    private void placePieces(List<String> pieces, List<Integer> safeSquares, List<Integer> occupiedSquares, Map<Integer, String> candidate, Set<Map<Integer, String>> solutions) {
         String piece = pieces.get(0);
         List<String> remainingPieces = new ArrayList<>(pieces);
         remainingPieces.remove(0);
