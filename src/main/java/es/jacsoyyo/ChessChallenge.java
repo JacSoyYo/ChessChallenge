@@ -8,13 +8,28 @@ import java.util.*;
 public class ChessChallenge {
 
     public static void main(String[] args) {
-
         // Init
         // TODO read parameters
         int rows = 3;
         int columns = 3;
+        List<String> pieces = new ArrayList<>(Arrays.asList("K", "K", "R"));
 
-        List<String> pieces = new ArrayList<>(Arrays.asList("K", "Q", "R"));
+        ChessChallenge chessChallenge = new ChessChallenge(rows, columns, pieces);
+
+        chessChallenge.doChallenge();
+    }
+
+    private int rows;
+    private int columns;
+    private List<String> pieces;
+
+    public ChessChallenge(int rows, int columns, List<String> pieces) {
+        this.rows = rows;
+        this.columns = columns;
+        this.pieces = pieces;
+    }
+
+    public void doChallenge() {
 
         // All squares are safe
         List<Integer> safeSquares = new ArrayList<>(rows * columns);
@@ -44,12 +59,10 @@ public class ChessChallenge {
 
     private static void placePieces(List<String> pieces, List<Integer> safeSquares, List<Integer> occupiedSquares, Map<Integer, String> candidate, List<Map<Integer, String>> solutions) {
         String piece = pieces.get(0);
-        //System.out.println("Piece : " + piece);
         List<String> remainingPieces = new ArrayList<>(pieces);
         remainingPieces.remove(0);
         // for every safe square remaining
         for (Integer candidateSquare : safeSquares) {
-            System.out.println("Piece: " + piece + "\t square: " + candidateSquare);
             List<Integer> threatenedSquares = threatenedSquares(piece, candidateSquare); //TODO calculate threatened squares
             if (Collections.disjoint(threatenedSquares, occupiedSquares)) {
                 // update safe squares (threatens any other piece? -> skip)
@@ -65,17 +78,26 @@ public class ChessChallenge {
                     placePieces(remainingPieces, candidateSafeSquares, candidateOccupiedSquares, newCandidate, solutions);
                 } else {
                     solutions.add(newCandidate);
-                    for (Integer position : newCandidate.keySet()) {
-                        System.out.print(position + " - " + newCandidate.get(position) + " : ");
-                    }
-                    System.out.println();
                 }
             }
         }
-        System.out.println("return");
     }
 
     private static List<Integer> threatenedSquares(String piece, Integer position) {
-        return new ArrayList<>();
+        List<Integer> threatenedSquares = new ArrayList<>();
+        switch (piece){
+            case "K":
+                break;
+            case "Q":
+                break;
+            case "B":
+                break;
+            case "R":
+                break;
+            case "N":
+                break;
+            default:
+        }
+        return threatenedSquares;
     }
 }
