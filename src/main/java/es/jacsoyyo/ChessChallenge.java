@@ -57,7 +57,7 @@ public class ChessChallenge {
         }
     }
 
-    private static void placePieces(List<String> pieces, List<Integer> safeSquares, List<Integer> occupiedSquares, Map<Integer, String> candidate, List<Map<Integer, String>> solutions) {
+    private void placePieces(List<String> pieces, List<Integer> safeSquares, List<Integer> occupiedSquares, Map<Integer, String> candidate, List<Map<Integer, String>> solutions) {
         String piece = pieces.get(0);
         List<String> remainingPieces = new ArrayList<>(pieces);
         remainingPieces.remove(0);
@@ -83,10 +83,21 @@ public class ChessChallenge {
         }
     }
 
-    private static List<Integer> threatenedSquares(String piece, Integer position) {
+    private List<Integer> threatenedSquares(String piece, Integer position) {
+        int row = position / rows;
+        int column = position - (row * columns);
         List<Integer> threatenedSquares = new ArrayList<>();
         switch (piece){
             case "K":
+                for (int i = row - 1; i < row + 2; i++){
+                    if (i >= 0) {
+                        for (int j = column - 1; j < column + 2; j++) {
+                            if (j >= 0) {
+                                threatenedSquares.add(j + i * columns);
+                            }
+                        }
+                    }
+                }
                 break;
             case "Q":
                 break;
