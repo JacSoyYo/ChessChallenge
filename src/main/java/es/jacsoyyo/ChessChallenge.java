@@ -12,7 +12,7 @@ public class ChessChallenge {
         // TODO read parameters
         int rows = 3;
         int columns = 3;
-        List<String> pieces = new ArrayList<>(Arrays.asList("K", "K", "R"));
+        List<String> pieces = new ArrayList<>(Arrays.asList("R", "R", "R"));
 
         ChessChallenge chessChallenge = new ChessChallenge(rows, columns, pieces);
 
@@ -128,6 +128,20 @@ public class ChessChallenge {
                 }
                 break;
             case "N":
+                for (int i = 1; i <= 2; i++){
+                    for (int x = -1; x <= 1; x += 2) {
+                        int nRow = row + i * x;
+                        if (nRow >= 0 && nRow < rows) {
+                            int j = i == 1 ? 2 : 1;
+                            for (int y = -1; y <= 1; y += 2) {
+                                int nColumn = column + j * y;
+                                if (nColumn >= 0 && nColumn < columns){
+                                    threatenedSquares.add(nColumn + nRow * columns);
+                                }
+                            }
+                        }
+                    }
+                }
                 break;
             default:
         }
