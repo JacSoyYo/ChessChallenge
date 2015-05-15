@@ -10,9 +10,9 @@ public class ChessChallenge {
     public static void main(String[] args) {
         // Init
         // TODO read parameters
-        int rows = 4;
-        int columns = 4;
-        List<String> pieces = new ArrayList<>(Arrays.asList("R", "R", "N", "N", "N", "N"));
+        int rows = 8;
+        int columns = 8;
+        List<String> pieces = new ArrayList<>(Arrays.asList("Q", "Q", "Q", "Q", "Q", "Q", "Q", "Q"));
 
         ChessChallenge chessChallenge = new ChessChallenge(rows, columns, pieces);
 
@@ -32,7 +32,7 @@ public class ChessChallenge {
     public void doChallenge() {
 
         // All squares are safe
-        List<Integer> safeSquares = new ArrayList<>(rows * columns);
+        Set<Integer> safeSquares = new HashSet<>(rows * columns);
         for (int row = 0; row < rows; row++) {
             for (int column = 0; column < columns; column++) {
                 safeSquares.add(column + row * columns);
@@ -40,7 +40,7 @@ public class ChessChallenge {
         }
 
         // No occupied squares
-        List<Integer> occupiedSquares = new ArrayList<>(pieces.size());
+        Set<Integer> occupiedSquares = new HashSet<>(pieces.size());
 
         Map<Integer, String> candidate = new HashMap<>(pieces.size());
         Set<Map<Integer, String>> solutions = new HashSet<>();
@@ -57,20 +57,20 @@ public class ChessChallenge {
         }
     }
 
-    private void placePieces(List<String> pieces, List<Integer> safeSquares, List<Integer> occupiedSquares, Map<Integer, String> candidate, Set<Map<Integer, String>> solutions) {
+    private void placePieces(List<String> pieces, Set<Integer> safeSquares, Set<Integer> occupiedSquares, Map<Integer, String> candidate, Set<Map<Integer, String>> solutions) {
         String piece = pieces.get(0);
         List<String> remainingPieces = new ArrayList<>(pieces);
         remainingPieces.remove(0);
         // for every safe square remaining
         for (Integer candidateSquare : safeSquares) {
-            List<Integer> threatenedSquares = threatenedSquares(piece, candidateSquare); //TODO calculate threatened squares
+            Set<Integer> threatenedSquares = threatenedSquares(piece, candidateSquare); //TODO calculate threatened squares
             if (Collections.disjoint(threatenedSquares, occupiedSquares)) {
                 // update safe squares (threatens any other piece? -> skip)
-                List<Integer> candidateOccupiedSquares = new ArrayList<>(occupiedSquares);
+                Set<Integer> candidateOccupiedSquares = new HashSet<>(occupiedSquares);
                 candidateOccupiedSquares.add(candidateSquare);
                 Map<Integer, String> newCandidate = new HashMap<>(candidate);
                 newCandidate.put(candidateSquare, piece);
-                List<Integer> candidateSafeSquares = new ArrayList<>(safeSquares);
+                Set<Integer> candidateSafeSquares = new HashSet<>(safeSquares);
                 candidateSafeSquares.removeAll(threatenedSquares);
                 candidateSafeSquares.remove(candidateSquare);
                 // try to place remaining pieces
@@ -83,13 +83,13 @@ public class ChessChallenge {
         }
     }
 
-    private List<Integer> threatenedSquares(String piece, Integer position) {
+    private Set<Integer> threatenedSquares(String piece, Integer position) {
         int row = position / rows;
         int column = position - (row * columns);
-        List<Integer> threatenedSquares = new ArrayList<>();
-        switch (piece){
+        Set<Integer> threatenedSquares = new HashSet<>();
+        switch (piece) {
             case "K":
-                for (int i = row - 1; i < row + 2 && i < rows; i++){
+                for (int i = row - 1; i < row + 2 && i < rows; i++) {
                     if (i >= 0) {
                         for (int j = column - 1; j < column + 2 && j < columns; j++) {
                             if (j >= 0) {
@@ -104,40 +104,36 @@ public class ChessChallenge {
                 threatenedSquares.addAll(threatenedSquares("B", position));
                 break;
             case "B":
-                for (int i = row; i < rows; i++){
-                    for (int j = column; j < columns; j++){
-                        threatenedSquares.add(j + i * columns);
-                    }
-                    for (int j = column; j >= 0; j--){
-                        threatenedSquares.add(j + i * columns);
-                    }
+                for (int i = row, j = column; i < rows && j < columns; i++, j++) {
+                    threatenedSquares.add(j + i * columns);
                 }
-                for (int i = row; i >= 0; i--){
-                    for (int j = column; j < columns; j++){
-                        threatenedSquares.add(j + i * columns);
-                    }
-                    for (int j = column; j >= 0; j--){
-                        threatenedSquares.add(j + i * columns);
-                    }
+                for (int i = row, j = column; i < rows && j >= 0; i++, j--) {
+                    threatenedSquares.add(j + i * columns);
+                }
+                for (int i = row, j = column; i >= 0 && j < columns; i--, j++) {
+                    threatenedSquares.add(j + i * columns);
+                }
+                for (int i = row, j = column; i >= 0 && j >= 0; i--, j--) {
+                    threatenedSquares.add(j + i * columns);
                 }
                 break;
             case "R":
-                for (int i = 0; i < columns; i++){
+                for (int i = 0; i < columns; i++) {
                     threatenedSquares.add(i + row * columns);
                 }
-                for (int i = 0; i < rows; i++){
+                for (int i = 0; i < rows; i++) {
                     threatenedSquares.add(column + i * columns);
                 }
                 break;
             case "N":
-                for (int i = 1; i <= 2; i++){
+                for (int i = 1; i <= 2; i++) {
                     for (int x = -1; x <= 1; x += 2) {
                         int nRow = row + i * x;
                         if (nRow >= 0 && nRow < rows) {
                             int j = i == 1 ? 2 : 1;
                             for (int y = -1; y <= 1; y += 2) {
                                 int nColumn = column + j * y;
-                                if (nColumn >= 0 && nColumn < columns){
+                                if (nColumn >= 0 && nColumn < columns) {
                                     threatenedSquares.add(nColumn + nRow * columns);
                                 }
                             }
