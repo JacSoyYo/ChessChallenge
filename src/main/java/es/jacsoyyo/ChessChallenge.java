@@ -63,66 +63,65 @@ public class ChessChallenge {
         remainingPieces.remove(0);
         // for every safe square remaining
         for (Integer candidateSquare : safeSquares) {
-            Set<Integer> threatenedSquares = threatenedSquares(piece, candidateSquare); //TODO calculate threatened squares
-            if (Collections.disjoint(threatenedSquares, occupiedSquares)) {
-                // update safe squares (threatens any other piece? -> skip)
+            Set<Integer> candidateSafeSquares = new HashSet<>(safeSquares);
+            candidateSafeSquares.remove(candidateSquare);
+            try {
+                calculatePieceMoves(piece, candidateSquare, candidateSafeSquares, occupiedSquares);
                 Set<Integer> candidateOccupiedSquares = new HashSet<>(occupiedSquares);
                 candidateOccupiedSquares.add(candidateSquare);
                 Map<Integer, String> newCandidate = new HashMap<>(candidate);
                 newCandidate.put(candidateSquare, piece);
-                Set<Integer> candidateSafeSquares = new HashSet<>(safeSquares);
-                candidateSafeSquares.removeAll(threatenedSquares);
-                candidateSafeSquares.remove(candidateSquare);
                 // try to place remaining pieces
                 if (!remainingPieces.isEmpty()) {
                     placePieces(remainingPieces, candidateSafeSquares, candidateOccupiedSquares, newCandidate, solutions);
                 } else {
                     solutions.add(newCandidate);
                 }
+            } catch (ThreatensOccupiedSquare e) {
+                // skip
             }
         }
     }
 
-    private Set<Integer> threatenedSquares(String piece, Integer position) {
+    private void calculatePieceMoves(String piece, Integer position, Set<Integer> safeSquares, Set<Integer> occupiedSquares) throws ThreatensOccupiedSquare {
         int row = position / rows;
         int column = position - (row * columns);
-        Set<Integer> threatenedSquares = new HashSet<>(rows * columns);
         switch (piece) {
             case "K":
                 for (int i = row - 1; i < row + 2 && i < rows; i++) {
                     if (i >= 0) {
                         for (int j = column - 1; j < column + 2 && j < columns; j++) {
                             if (j >= 0) {
-                                threatenedSquares.add(j + i * columns);
+                                updateSquares(j + i * columns, safeSquares, occupiedSquares);
                             }
                         }
                     }
                 }
                 break;
             case "Q":
-                threatenedSquares.addAll(threatenedSquares("R", position));
-                threatenedSquares.addAll(threatenedSquares("B", position));
+                calculatePieceMoves("R", position, safeSquares, occupiedSquares);
+                calculatePieceMoves("B", position, safeSquares, occupiedSquares);
                 break;
             case "B":
                 for (int i = row, j = column; i < rows && j < columns; i++, j++) {
-                    threatenedSquares.add(j + i * columns);
+                    updateSquares(j + i * columns, safeSquares, occupiedSquares);
                 }
                 for (int i = row, j = column; i < rows && j >= 0; i++, j--) {
-                    threatenedSquares.add(j + i * columns);
+                    updateSquares(j + i * columns, safeSquares, occupiedSquares);
                 }
                 for (int i = row, j = column; i >= 0 && j < columns; i--, j++) {
-                    threatenedSquares.add(j + i * columns);
+                    updateSquares(j + i * columns, safeSquares, occupiedSquares);
                 }
                 for (int i = row, j = column; i >= 0 && j >= 0; i--, j--) {
-                    threatenedSquares.add(j + i * columns);
+                    updateSquares(j + i * columns, safeSquares, occupiedSquares);
                 }
                 break;
             case "R":
                 for (int i = 0; i < columns; i++) {
-                    threatenedSquares.add(i + row * columns);
+                    updateSquares(i + row * columns, safeSquares, occupiedSquares);
                 }
                 for (int i = 0; i < rows; i++) {
-                    threatenedSquares.add(column + i * columns);
+                    updateSquares(column + i * columns, safeSquares, occupiedSquares);
                 }
                 break;
             case "N":
@@ -134,7 +133,7 @@ public class ChessChallenge {
                             for (int y = -1; y <= 1; y += 2) {
                                 int nColumn = column + j * y;
                                 if (nColumn >= 0 && nColumn < columns) {
-                                    threatenedSquares.add(nColumn + nRow * columns);
+                                    updateSquares(nColumn + nRow * columns, safeSquares, occupiedSquares);
                                 }
                             }
                         }
@@ -143,6 +142,19 @@ public class ChessChallenge {
                 break;
             default:
         }
-        return threatenedSquares;
+    }
+    
+    private void updateSquares(Integer position, Set<Integer> safeSquares, Set<Integer> occupiedSquares) throws ThreatensOccupiedSquare{
+        if (occupiedSquares.contains(position)){
+            throw new ThreatensOccupiedSquare();
+        }
+        safeSquares.remove(position);
+    }
+
+    private static class ThreatensOccupiedSquare extends Exception {
+
+        public ThreatensOccupiedSquare() {
+        }
+
     }
 }
