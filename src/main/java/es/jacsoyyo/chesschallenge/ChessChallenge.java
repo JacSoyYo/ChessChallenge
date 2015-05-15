@@ -1,4 +1,4 @@
-package es.jacsoyyo;
+package es.jacsoyyo.chesschallenge;
 
 import java.util.*;
 
@@ -10,9 +10,9 @@ public class ChessChallenge {
     public static void main(String[] args) {
         // Init
         // TODO read parameters
-        int rows = 8;
-        int columns = 8;
-        List<String> pieces = new ArrayList<>(Arrays.asList("Q", "Q", "Q", "Q", "Q", "Q", "Q", "Q"));
+        int rows = 7;
+        int columns = 7;
+        List<String> pieces = new ArrayList<>(Arrays.asList("Q", "Q", "Q", "Q", "Q", "Q", "Q")); //, "Q"));
 
         ChessChallenge chessChallenge = new ChessChallenge(rows, columns, pieces);
 
@@ -29,7 +29,7 @@ public class ChessChallenge {
         this.pieces = pieces;
     }
 
-    public void doChallenge() {
+    public int doChallenge() {
 
         // All squares are safe
         Set<Integer> safeSquares = new HashSet<>(rows * columns);
@@ -55,6 +55,7 @@ public class ChessChallenge {
             }
             System.out.println();
         }
+        return solutions.size();
     }
 
     private void placePieces(List<String> pieces, Set<Integer> safeSquares, Set<Integer> occupiedSquares, Map<Integer, String> candidate, Set<Map<Integer, String>> solutions) {
