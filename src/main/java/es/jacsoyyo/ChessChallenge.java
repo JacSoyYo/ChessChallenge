@@ -86,7 +86,7 @@ public class ChessChallenge {
     private Set<Integer> threatenedSquares(String piece, Integer position) {
         int row = position / rows;
         int column = position - (row * columns);
-        Set<Integer> threatenedSquares = new HashSet<>();
+        Set<Integer> threatenedSquares = new HashSet<>(rows * columns);
         switch (piece) {
             case "K":
                 for (int i = row - 1; i < row + 2 && i < rows; i++) {
