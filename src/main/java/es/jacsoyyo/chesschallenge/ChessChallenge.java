@@ -10,9 +10,9 @@ public class ChessChallenge {
     public static void main(String[] args) {
         // Init
         // TODO read parameters
-        int rows = 7;
-        int columns = 7;
-        List<String> pieces = new ArrayList<>(Arrays.asList("Q", "Q", "Q", "Q", "Q", "Q", "Q")); //, "Q"));
+        int rows = 8;
+        int columns = 8;
+        List<String> pieces = new ArrayList<>(Arrays.asList("Q", "Q", "Q", "Q", "Q", "Q", "Q", "Q"));
 
         ChessChallenge chessChallenge = new ChessChallenge(rows, columns, pieces);
 
@@ -70,14 +70,15 @@ public class ChessChallenge {
                 calculatePieceMoves(piece, candidateSquare, candidateSafeSquares, occupiedSquares);
                 Set<Integer> candidateOccupiedSquares = new HashSet<>(occupiedSquares);
                 candidateOccupiedSquares.add(candidateSquare);
-                Map<Integer, String> newCandidate = new HashMap<>(candidate);
-                newCandidate.put(candidateSquare, piece);
+                candidate.put(candidateSquare, piece);
                 // try to place remaining pieces
                 if (!remainingPieces.isEmpty()) {
-                    placePieces(remainingPieces, candidateSafeSquares, candidateOccupiedSquares, newCandidate, solutions);
+                    placePieces(remainingPieces, candidateSafeSquares, candidateOccupiedSquares, candidate, solutions);
                 } else {
-                    solutions.add(newCandidate);
+                    Map<Integer, String> solution = new HashMap<>(candidate);
+                    solutions.add(solution);
                 }
+                candidate.remove(candidateSquare);
             } catch (ThreatensOccupiedSquare e) {
                 // skip
             }
