@@ -53,7 +53,7 @@ public class Board {
         return candidate;
     }
 
-    private void updateSquares(Integer position, List<Integer> safeSquares, Set<Integer> occupiedSquares) throws ThreatensOccupiedSquare{
+    private void updateSquares(Integer position, List<Integer> safeSquares) throws ThreatensOccupiedSquare{
         if (occupiedSquares.contains(position)){
             throw new ThreatensOccupiedSquare();
         }
@@ -61,7 +61,7 @@ public class Board {
     }
 
     void placePiece(Piece piece, Integer candidateSquare, List<Integer> candidateSafeSquares) throws ThreatensOccupiedSquare {
-        calculatePieceMoves(piece, candidateSquare, candidateSafeSquares);
+        piece.threatenedSquares(candidateSquare, rows, columns, p -> updateSquares(p, candidateSafeSquares));
         occupiedSquares.add(candidateSquare);
         candidate.put(candidateSquare, piece);
     }
@@ -71,66 +71,5 @@ public class Board {
         candidate.remove(candidateSquare);
        
     }
-
-    private void calculatePieceMoves(Piece piece, Integer position, List<Integer> safeSquares) throws ThreatensOccupiedSquare {
-        int row = position / rows;
-        int column = position - (row * columns);
-        switch (piece) {
-            case KING:
-                for (int i = row - 1; i < row + 2 && i < rows; i++) {
-                    if (i >= 0) {
-                        for (int j = column - 1; j < column + 2 && j < columns; j++) {
-                            if (j >= 0) {
-                                updateSquares(j + i * columns, safeSquares, occupiedSquares);
-                            }
-                        }
-                    }
-                }
-                break;
-            case QUEEN:
-                calculatePieceMoves(ROOK, position, safeSquares);
-                calculatePieceMoves(BISHOP, position, safeSquares);
-                break;
-            case BISHOP:
-                for (int i = row, j = column; i < rows && j < columns; i++, j++) {
-                    updateSquares(j + i * columns, safeSquares, occupiedSquares);
-                }
-                for (int i = row, j = column; i < rows && j >= 0; i++, j--) {
-                    updateSquares(j + i * columns, safeSquares, occupiedSquares);
-                }
-                for (int i = row, j = column; i >= 0 && j < columns; i--, j++) {
-                    updateSquares(j + i * columns, safeSquares, occupiedSquares);
-                }
-                for (int i = row, j = column; i >= 0 && j >= 0; i--, j--) {
-                    updateSquares(j + i * columns, safeSquares, occupiedSquares);
-                }
-                break;
-            case ROOK:
-                for (int i = 0; i < columns; i++) {
-                    updateSquares(i + row * columns, safeSquares, occupiedSquares);
-                }
-                for (int i = 0; i < rows; i++) {
-                    updateSquares(column + i * columns, safeSquares, occupiedSquares);
-                }
-                break;
-            case KNIGHT:
-                for (int i = 1; i <= 2; i++) {
-                    for (int x = -1; x <= 1; x += 2) {
-                        int nRow = row + i * x;
-                        if (nRow >= 0 && nRow < rows) {
-                            int j = i == 1 ? 2 : 1;
-                            for (int y = -1; y <= 1; y += 2) {
-                                int nColumn = column + j * y;
-                                if (nColumn >= 0 && nColumn < columns) {
-                                    updateSquares(nColumn + nRow * columns, safeSquares, occupiedSquares);
-                                }
-                            }
-                        }
-                    }
-                }
-                break;
-            default:
-        }
-    }    
 
 }
