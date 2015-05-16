@@ -160,10 +160,4 @@ public class ChessChallenge {
         safeSquares.remove(position);
     }
 
-    private static class ThreatensOccupiedSquare extends Exception {
-
-        public ThreatensOccupiedSquare() {
-        }
-
-    }
 }
