@@ -19,6 +19,15 @@ public class ChessChallengeTest {
     
     public ChessChallengeTest() {
     }
+
+    @Test
+    public void test4Rooks3x3() {
+        int rows = 3;
+        int columns = 3;
+        List<String> pieces = new ArrayList<>(Arrays.asList("R", "R", "R", "R"));
+        ChessChallenge chessChallenge = new ChessChallenge(rows, columns, pieces);
+        assertEquals(chessChallenge.doChallenge(), 0);
+    }
     
     @Test
     public void test7Queens7x7() {
