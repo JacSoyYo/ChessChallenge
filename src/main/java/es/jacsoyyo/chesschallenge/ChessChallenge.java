@@ -32,7 +32,7 @@ public class ChessChallenge {
     public int doChallenge() {
 
         // All squares are safe
-        Set<Integer> safeSquares = new HashSet<>(rows * columns);
+        List<Integer> safeSquares = new ArrayList<>(rows * columns);
         for (int row = 0; row < rows; row++) {
             for (int column = 0; column < columns; column++) {
                 safeSquares.add(column + row * columns);
@@ -58,13 +58,13 @@ public class ChessChallenge {
         return solutions.size();
     }
 
-    private void placePieces(List<String> pieces, Set<Integer> safeSquares, Set<Integer> occupiedSquares, Map<Integer, String> candidate, Set<Map<Integer, String>> solutions) {
+    private void placePieces(List<String> pieces, List<Integer> safeSquares, Set<Integer> occupiedSquares, Map<Integer, String> candidate, Set<Map<Integer, String>> solutions) {
         String piece = pieces.get(0);
         List<String> remainingPieces = new ArrayList<>(pieces);
         remainingPieces.remove(0);
         // for every safe square remaining
         for (Integer candidateSquare : safeSquares) {
-            Set<Integer> candidateSafeSquares = new HashSet<>(safeSquares);
+            List<Integer> candidateSafeSquares = new ArrayList<>(safeSquares);
             candidateSafeSquares.remove(candidateSquare);
             try {
                 calculatePieceMoves(piece, candidateSquare, candidateSafeSquares, occupiedSquares);
@@ -85,7 +85,7 @@ public class ChessChallenge {
         }
     }
 
-    private void calculatePieceMoves(String piece, Integer position, Set<Integer> safeSquares, Set<Integer> occupiedSquares) throws ThreatensOccupiedSquare {
+    private void calculatePieceMoves(String piece, Integer position, List<Integer> safeSquares, Set<Integer> occupiedSquares) throws ThreatensOccupiedSquare {
         int row = position / rows;
         int column = position - (row * columns);
         switch (piece) {
@@ -146,7 +146,7 @@ public class ChessChallenge {
         }
     }
     
-    private void updateSquares(Integer position, Set<Integer> safeSquares, Set<Integer> occupiedSquares) throws ThreatensOccupiedSquare{
+    private void updateSquares(Integer position, List<Integer> safeSquares, Set<Integer> occupiedSquares) throws ThreatensOccupiedSquare{
         if (occupiedSquares.contains(position)){
             throw new ThreatensOccupiedSquare();
         }
