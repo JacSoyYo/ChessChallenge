@@ -68,16 +68,16 @@ public class ChessChallenge {
             candidateSafeSquares.remove(candidateSquare);
             try {
                 calculatePieceMoves(piece, candidateSquare, candidateSafeSquares, occupiedSquares);
-                Set<Integer> candidateOccupiedSquares = new HashSet<>(occupiedSquares);
-                candidateOccupiedSquares.add(candidateSquare);
+                occupiedSquares.add(candidateSquare);
                 candidate.put(candidateSquare, piece);
                 // try to place remaining pieces
                 if (!remainingPieces.isEmpty()) {
-                    placePieces(remainingPieces, candidateSafeSquares, candidateOccupiedSquares, candidate, solutions);
+                    placePieces(remainingPieces, candidateSafeSquares, occupiedSquares, candidate, solutions);
                 } else {
                     Map<Integer, String> solution = new HashMap<>(candidate);
                     solutions.add(solution);
                 }
+                occupiedSquares.remove(candidateSquare);
                 candidate.remove(candidateSquare);
             } catch (ThreatensOccupiedSquare e) {
                 // skip
