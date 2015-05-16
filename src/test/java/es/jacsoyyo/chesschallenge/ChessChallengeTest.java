@@ -5,6 +5,7 @@
  */
 package es.jacsoyyo.chesschallenge;
 
+import static es.jacsoyyo.chesschallenge.Piece.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -24,7 +25,7 @@ public class ChessChallengeTest {
     public void test4Rooks3x3() {
         int rows = 3;
         int columns = 3;
-        List<String> pieces = new ArrayList<>(Arrays.asList("R", "R", "R", "R"));
+        List<Piece> pieces = new ArrayList<>(Arrays.asList(ROOK, ROOK, ROOK, ROOK));
         ChessChallenge chessChallenge = new ChessChallenge(rows, columns, pieces);
         assertEquals(chessChallenge.doChallenge(), 0);
     }
@@ -33,7 +34,7 @@ public class ChessChallengeTest {
     public void test7Queens7x7() {
         int rows = 7;
         int columns = 7;
-        List<String> pieces = new ArrayList<>(Arrays.asList("Q", "Q", "Q", "Q", "Q", "Q", "Q"));
+        List<Piece> pieces = new ArrayList<>(Arrays.asList(QUEEN, QUEEN, QUEEN, QUEEN, QUEEN, QUEEN, QUEEN));
         ChessChallenge chessChallenge = new ChessChallenge(rows, columns, pieces);
         assertEquals(chessChallenge.doChallenge(), 40);
     }
@@ -42,7 +43,7 @@ public class ChessChallengeTest {
     public void test2Kings1Rook3x3() {
         int rows = 3;
         int columns = 3;
-        List<String> pieces = new ArrayList<>(Arrays.asList("K", "K", "R"));
+        List<Piece> pieces = new ArrayList<>(Arrays.asList(KING, KING, ROOK));
         ChessChallenge chessChallenge = new ChessChallenge(rows, columns, pieces);
         assertEquals(chessChallenge.doChallenge(), 4);
     }
@@ -51,7 +52,7 @@ public class ChessChallengeTest {
     public void test2Rooks4Knights4x4() {
         int rows = 4;
         int columns = 4;
-        List<String> pieces = new ArrayList<>(Arrays.asList("R", "R", "N", "N", "N", "N"));
+        List<Piece> pieces = new ArrayList<>(Arrays.asList(ROOK, ROOK, KNIGHT, KNIGHT, KNIGHT, KNIGHT));
         ChessChallenge chessChallenge = new ChessChallenge(rows, columns, pieces);
         assertEquals(chessChallenge.doChallenge(), 8);
     }
