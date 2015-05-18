@@ -1,6 +1,6 @@
 package es.jacsoyyo.chesschallenge;
 
-import static es.jacsoyyo.chesschallenge.Piece.*;
+import static es.jacsoyyo.chesschallenge.Piece.QUEEN;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -39,43 +39,54 @@ public class ChessChallenge {
         Set<Map<Integer, Piece>> solutions = new HashSet<>();
 
         List<Integer> safeSquares = board.getSquares();
-                
-        // Try to place every piece on every square
-        placePieces(pieces, board, safeSquares, solutions);
+        Map<Integer, Piece> candidate = new HashMap<>(pieces.size());
+        
+        long before = System.currentTimeMillis();
+        // Try to place pieces
+        placePieces(pieces, board, safeSquares, candidate, solutions);
+        long after = System.currentTimeMillis();
+        
+        printSolutions(solutions, after, before);
+        return solutions.size();
+    }
 
-        System.out.println("Solutions: " + solutions.size());
+    private void placePieces(List<Piece> pieces, Board board, List<Integer> safeSquares, Map<Integer, Piece> candidate, Set<Map<Integer, Piece>> solutions) {
+        Piece piece = pieces.get(0);
+        List<Piece> remainingPieces = new ArrayList<>(pieces);
+        remainingPieces.remove(0);
+        // for every safe square remaining
+        safeSquares.parallelStream().forEach((candidateSquare) -> {
+            List<Integer> candidateSafeSquares = new ArrayList<>(safeSquares);
+            candidateSafeSquares.remove(candidateSquare);
+            try {
+                board.placePiece(piece, candidateSquare, candidateSafeSquares, candidate);
+                Map<Integer, Piece> newCandidate = new HashMap<>(candidate);
+                newCandidate.put(candidateSquare, piece);
+                if (!remainingPieces.isEmpty()) {
+                    // try to place remaining pieces
+                    placePieces(remainingPieces, board, candidateSafeSquares, newCandidate, solutions);
+                } else {
+                    // we got to a solution
+                    Map<Integer, Piece> solution = new HashMap<>(newCandidate);
+                    synchronized (solutions){
+                        solutions.add(solution);
+                    }
+                }
+            } catch (ThreatensOccupiedSquare e) {
+                // candidate failed
+            }
+        });
+    }
+
+    private void printSolutions(Set<Map<Integer, Piece>> solutions, long after, long before) {
+        System.out.println(solutions.size() + " solutions found in " + (after - before) + "ms");
+        System.out.println();
         for (Map<Integer, Piece> solution : solutions) {
             for (Integer position : solution.keySet()) {
                 System.out.print(position + " - " + solution.get(position) + " : ");
             }
             System.out.println();
         }
-        return solutions.size();
-    }
-
-    private void placePieces(List<Piece> pieces, Board board, List<Integer> safeSquares, Set<Map<Integer, Piece>> solutions) {
-        Piece piece = pieces.get(0);
-        pieces.remove(0);
-        // for every safe square remaining
-        for (Integer candidateSquare : safeSquares) {
-            List<Integer> candidateSafeSquares = new ArrayList<>(safeSquares);
-            candidateSafeSquares.remove(candidateSquare);
-            try {
-                board.placePiece(piece, candidateSquare, candidateSafeSquares);
-                if (!pieces.isEmpty()) {
-                    // try to place remaining pieces
-                    placePieces(pieces, board, candidateSafeSquares, solutions);
-                } else {
-                    // we got to a solution
-                    Map<Integer, Piece> solution = new HashMap<>(board.getCandidate());
-                    solutions.add(solution);
-                }
-                board.removePiece(candidateSquare);
-            } catch (ThreatensOccupiedSquare e) {
-                // skip
-            }
-        }
-        pieces.add(piece);
     }
 
 }
