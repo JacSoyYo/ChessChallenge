@@ -21,13 +21,17 @@ public class ChessChallengeTest {
     public ChessChallengeTest() {
     }
 
+    public void algo(){
+        String name = new Object(){}.getClass().getEnclosingMethod().getName();
+    }
+    
     @Test
     public void test4Rooks3x3() {
         int rows = 3;
         int columns = 3;
         List<Piece> pieces = new ArrayList<>(Arrays.asList(ROOK, ROOK, ROOK, ROOK));
         ChessChallenge chessChallenge = new ChessChallenge(rows, columns, pieces);
-        assertEquals(chessChallenge.doChallenge(), 0);
+        assertEquals(0, chessChallenge.doChallenge());
     }
     
     @Test
@@ -36,7 +40,7 @@ public class ChessChallengeTest {
         int columns = 7;
         List<Piece> pieces = new ArrayList<>(Arrays.asList(QUEEN, QUEEN, QUEEN, QUEEN, QUEEN, QUEEN, QUEEN));
         ChessChallenge chessChallenge = new ChessChallenge(rows, columns, pieces);
-        assertEquals(chessChallenge.doChallenge(), 40);
+        assertEquals(40, chessChallenge.doChallenge());
     }
     
     @Test
@@ -45,7 +49,7 @@ public class ChessChallengeTest {
         int columns = 3;
         List<Piece> pieces = new ArrayList<>(Arrays.asList(KING, KING, ROOK));
         ChessChallenge chessChallenge = new ChessChallenge(rows, columns, pieces);
-        assertEquals(chessChallenge.doChallenge(), 4);
+        assertEquals(4, chessChallenge.doChallenge());
     }
 
     @Test
@@ -54,6 +58,6 @@ public class ChessChallengeTest {
         int columns = 4;
         List<Piece> pieces = new ArrayList<>(Arrays.asList(ROOK, ROOK, KNIGHT, KNIGHT, KNIGHT, KNIGHT));
         ChessChallenge chessChallenge = new ChessChallenge(rows, columns, pieces);
-        assertEquals(chessChallenge.doChallenge(), 8);
+        assertEquals(8, chessChallenge.doChallenge());
     }
 }
