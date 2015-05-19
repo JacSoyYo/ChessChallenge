@@ -26,7 +26,7 @@ public class ChessChallengeTest {
     public void test4Rooks3x3() {
         int rows = 3;
         int columns = 3;
-        List<Piece> pieces = new ArrayList<>(Arrays.asList(ROOK, ROOK, ROOK, ROOK));
+        List<Piece> pieces = new ArrayList<>(Arrays.asList(R, R, R, R));
         SolutionFinder chessChallenge = new SolutionFinder(rows, columns, pieces);
         Set<Map<Integer, Piece>> solutions = chessChallenge.findSolutions();
         assertEquals(0, solutions.size());
@@ -36,7 +36,7 @@ public class ChessChallengeTest {
     public void test7Queens7x7() {
         int rows = 7;
         int columns = 7;
-        List<Piece> pieces = new ArrayList<>(Arrays.asList(QUEEN, QUEEN, QUEEN, QUEEN, QUEEN, QUEEN, QUEEN));
+        List<Piece> pieces = new ArrayList<>(Arrays.asList(Q, Q, Q, Q, Q, Q, Q));
         SolutionFinder chessChallenge = new SolutionFinder(rows, columns, pieces);
         Set<Map<Integer, Piece>> solutions = chessChallenge.findSolutions();
         assertEquals(40, solutions.size());
@@ -46,7 +46,7 @@ public class ChessChallengeTest {
     public void test2Kings1Rook3x3() {
         int rows = 3;
         int columns = 3;
-        List<Piece> pieces = new ArrayList<>(Arrays.asList(KING, KING, ROOK));
+        List<Piece> pieces = new ArrayList<>(Arrays.asList(K, K, R));
         SolutionFinder chessChallenge = new SolutionFinder(rows, columns, pieces);
         Set<Map<Integer, Piece>> solutions = chessChallenge.findSolutions();
         assertEquals(4, solutions.size());
@@ -56,7 +56,7 @@ public class ChessChallengeTest {
     public void test2Rooks4Knights4x4() {
         int rows = 4;
         int columns = 4;
-        List<Piece> pieces = new ArrayList<>(Arrays.asList(ROOK, ROOK, KNIGHT, KNIGHT, KNIGHT, KNIGHT));
+        List<Piece> pieces = new ArrayList<>(Arrays.asList(R, R, N, N, N, N));
         SolutionFinder chessChallenge = new SolutionFinder(rows, columns, pieces);
         Set<Map<Integer, Piece>> solutions = chessChallenge.findSolutions();
         assertEquals(8, solutions.size());

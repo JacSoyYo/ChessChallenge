@@ -7,7 +7,7 @@ package es.jacsoyyo.chesschallenge;
  */
 public enum Piece {
 
-    KING, QUEEN, BISHOP, ROOK, KNIGHT;
+    K, Q, B, R, N;
 
     /**
      * Calculates all possible movements, calling the provided method for each
@@ -23,7 +23,7 @@ public enum Piece {
         int row = position / rows;
         int column = position - (row * columns);
         switch (this) {
-            case KING:
+            case K:
                 for (int i = row - 1; i < row + 2 && i < rows; i++) {
                     if (i >= 0) {
                         for (int j = column - 1; j < column + 2 && j < columns; j++) {
@@ -34,11 +34,11 @@ public enum Piece {
                     }
                 }
                 break;
-            case QUEEN:
-                ROOK.threatenedSquares(position, rows, columns, threatenedSquare);
-                BISHOP.threatenedSquares(position, rows, columns, threatenedSquare);
+            case Q:
+                R.threatenedSquares(position, rows, columns, threatenedSquare);
+                B.threatenedSquares(position, rows, columns, threatenedSquare);
                 break;
-            case BISHOP:
+            case B:
                 for (int i = row, j = column; i < rows && j < columns; i++, j++) {
                     threatenedSquare.markUnsafe(j + i * columns);
                 }
@@ -52,7 +52,7 @@ public enum Piece {
                     threatenedSquare.markUnsafe(j + i * columns);
                 }
                 break;
-            case ROOK:
+            case R:
                 for (int i = 0; i < columns; i++) {
                     threatenedSquare.markUnsafe(i + row * columns);
                 }
@@ -60,7 +60,7 @@ public enum Piece {
                     threatenedSquare.markUnsafe(column + i * columns);
                 }
                 break;
-            case KNIGHT:
+            case N:
                 for (int i = 1; i <= 2; i++) {
                     for (int x = -1; x <= 1; x += 2) {
                         int nRow = row + i * x;
