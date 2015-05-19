@@ -1,14 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package es.jacsoyyo.chesschallenge;
 
 import static es.jacsoyyo.chesschallenge.Piece.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
@@ -30,8 +27,9 @@ public class ChessChallengeTest {
         int rows = 3;
         int columns = 3;
         List<Piece> pieces = new ArrayList<>(Arrays.asList(ROOK, ROOK, ROOK, ROOK));
-        ChessChallenge chessChallenge = new ChessChallenge(rows, columns, pieces);
-        assertEquals(0, chessChallenge.doChallenge());
+        SolutionFinder chessChallenge = new SolutionFinder(rows, columns, pieces);
+        Set<Map<Integer, Piece>> solutions = chessChallenge.findSolutions();
+        assertEquals(0, solutions.size());
     }
     
     @Test
@@ -39,8 +37,9 @@ public class ChessChallengeTest {
         int rows = 7;
         int columns = 7;
         List<Piece> pieces = new ArrayList<>(Arrays.asList(QUEEN, QUEEN, QUEEN, QUEEN, QUEEN, QUEEN, QUEEN));
-        ChessChallenge chessChallenge = new ChessChallenge(rows, columns, pieces);
-        assertEquals(40, chessChallenge.doChallenge());
+        SolutionFinder chessChallenge = new SolutionFinder(rows, columns, pieces);
+        Set<Map<Integer, Piece>> solutions = chessChallenge.findSolutions();
+        assertEquals(40, solutions.size());
     }
     
     @Test
@@ -48,8 +47,9 @@ public class ChessChallengeTest {
         int rows = 3;
         int columns = 3;
         List<Piece> pieces = new ArrayList<>(Arrays.asList(KING, KING, ROOK));
-        ChessChallenge chessChallenge = new ChessChallenge(rows, columns, pieces);
-        assertEquals(4, chessChallenge.doChallenge());
+        SolutionFinder chessChallenge = new SolutionFinder(rows, columns, pieces);
+        Set<Map<Integer, Piece>> solutions = chessChallenge.findSolutions();
+        assertEquals(4, solutions.size());
     }
 
     @Test
@@ -57,7 +57,8 @@ public class ChessChallengeTest {
         int rows = 4;
         int columns = 4;
         List<Piece> pieces = new ArrayList<>(Arrays.asList(ROOK, ROOK, KNIGHT, KNIGHT, KNIGHT, KNIGHT));
-        ChessChallenge chessChallenge = new ChessChallenge(rows, columns, pieces);
-        assertEquals(8, chessChallenge.doChallenge());
+        SolutionFinder chessChallenge = new SolutionFinder(rows, columns, pieces);
+        Set<Map<Integer, Piece>> solutions = chessChallenge.findSolutions();
+        assertEquals(8, solutions.size());
     }
 }

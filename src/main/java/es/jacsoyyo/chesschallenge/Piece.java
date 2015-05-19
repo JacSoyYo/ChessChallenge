@@ -1,20 +1,27 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package es.jacsoyyo.chesschallenge;
 
 /**
+ * Chess pieces (except pawn)-
  *
  * @author jacobo
  */
 public enum Piece {
+
     KING, QUEEN, BISHOP, ROOK, KNIGHT;
-    
-    void threatenedSquares(Integer square, int rows, int columns, ThreatenedSquare threatenedSquare) throws ThreatensOccupiedSquare {
-        int row = square / rows;
-        int column = square - (row * columns);
+
+    /**
+     * Calculates all possible movements, calling the provided method for each
+     * threatened squade
+     *
+     * @param position
+     * @param rows number of rows
+     * @param columns number of columns
+     * @param threatenedSquare method to call for each threatened square
+     * @throws ThreatensOccupiedSquare if it threatens a occupied square
+     */
+    public void threatenedSquares(Integer position, int rows, int columns, ThreatenedSquare threatenedSquare) throws ThreatensOccupiedSquare {
+        int row = position / rows;
+        int column = position - (row * columns);
         switch (this) {
             case KING:
                 for (int i = row - 1; i < row + 2 && i < rows; i++) {
@@ -28,8 +35,8 @@ public enum Piece {
                 }
                 break;
             case QUEEN:
-                ROOK.threatenedSquares(square, rows, columns, threatenedSquare);
-                BISHOP.threatenedSquares(square, rows, columns, threatenedSquare);
+                ROOK.threatenedSquares(position, rows, columns, threatenedSquare);
+                BISHOP.threatenedSquares(position, rows, columns, threatenedSquare);
                 break;
             case BISHOP:
                 for (int i = row, j = column; i < rows && j < columns; i++, j++) {
@@ -71,10 +78,11 @@ public enum Piece {
                 break;
             default:
         }
-    }    
-        
+    }
+
     interface ThreatenedSquare {
+
         void markUnsafe(Integer position) throws ThreatensOccupiedSquare;
     }
-    
+
 }
