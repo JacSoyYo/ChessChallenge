@@ -19,7 +19,7 @@ public enum Piece {
      * @param threatenedSquare method to call for each threatened square
      * @throws ThreatensOccupiedSquare if it threatens a occupied square
      */
-    public void threatenedSquares(Integer position, int rows, int columns, ThreatenedSquare threatenedSquare) throws ThreatensOccupiedSquare {
+    public void threatenedSquares(Integer position, int rows, int columns, UpdateSquare threatenedSquare) throws ThreatensOccupiedSquare {
         int row = position / rows;
         int column = position - (row * columns);
         switch (this) {
@@ -80,7 +80,7 @@ public enum Piece {
         }
     }
 
-    interface ThreatenedSquare {
+    interface UpdateSquare {
 
         void markUnsafe(Integer position) throws ThreatensOccupiedSquare;
     }
