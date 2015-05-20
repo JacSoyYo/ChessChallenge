@@ -34,11 +34,16 @@ public class ChessChallenge {
             printInstructions();
             return;
         } else {
+            try{
             rows = Integer.parseInt(args[0]);
             columns = Integer.parseInt(args[1]);
             List<String> piecesS = Arrays.asList(args[2].split(","));
             for (String piece : piecesS) {
                 pieces.add(Piece.valueOf(piece));
+            }
+            } catch (Exception e){
+                printInstructions();
+                return;
             }
         }
 
@@ -46,8 +51,8 @@ public class ChessChallenge {
 
         SolutionFinder chessChallenge = new SolutionFinder(rows, columns, pieces);
         chessChallenge.findSolutions(c -> {
-            Map<Integer, Piece> solution = new HashMap<>(c);
-            solutions.add(solution);
+            //Map<Integer, Piece> solution = new HashMap<>(c);
+            //solutions.add(solution);
         });
 
         //printSolutions(solutions);
