@@ -1,11 +1,10 @@
 package es.jacsoyyo.chesschallenge;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Finds solutions
@@ -14,8 +13,10 @@ import java.util.Set;
  */
 public class SolutionFinder {
 
-    private Board board;
-    private List<Piece> pieces;
+    private final Board board;
+    private final List<Piece> pieces;
+
+    private int solutionsCount = 0;
 
     /**
      * Creates a new finder
@@ -26,7 +27,8 @@ public class SolutionFinder {
      */
     public SolutionFinder(int rows, int columns, List<Piece> pieces) {
         this.board = new Board(rows, columns);
-        this.pieces = pieces;
+        this.pieces = new ArrayList(pieces);
+        Collections.sort(this.pieces);
     }
 
     /**
@@ -35,26 +37,23 @@ public class SolutionFinder {
      * @return Set of solutions. Each one is a map where the key is the position
      * (number) of the square
      */
-    public Set<Map<Integer, Piece>> findSolutions() {
-
-        Set<Map<Integer, Piece>> solutions = new HashSet<>();
+    public int findSolutions(SolutionHandler solutionHandler) {
 
         List<Integer> safeSquares = board.getSquares();
         Map<Integer, Piece> candidate = new HashMap<>(pieces.size());
 
         long before = System.currentTimeMillis();
         // Try to place pieces
-        placePieces(pieces, board, safeSquares, candidate, solutions);
+        placePieces(pieces, safeSquares, candidate, new HashMap<>(), solutionHandler);
         long after = System.currentTimeMillis();
 
-        System.out.println(solutions.size() + " solutions found in " + (after - before) + "ms");
+        System.out.println(solutionsCount + " solutions found in " + (after - before) + "ms");
 
-        return solutions;
+        return solutionsCount;
     }
 
     /**
-     * Recursive method the tries to place the remaning pieces. Stores the
-     * candidate as a solution if there are no remaining pieces.
+     * Recursive method the tries to place the remaning pieces.
      *
      * @param pieces remaining pieces to place on the board (at lease one)
      * @param board the board
@@ -63,32 +62,42 @@ public class SolutionFinder {
      * @param candidate pieces already set on the board
      * @param solutions accumulated solutions
      */
-    private void placePieces(List<Piece> pieces, Board board, List<Integer> safeSquares, Map<Integer, Piece> candidate, Set<Map<Integer, Piece>> solutions) {
+    private void placePieces(List<Piece> pieces, List<Integer> safeSquares, Map<Integer, Piece> candidate, Map<Piece, Integer> triedPiecePosition, SolutionHandler solutionHandler) {
         Piece piece = pieces.get(0);
         List<Piece> remainingPieces = new ArrayList<>(pieces);
         remainingPieces.remove(0);
         // for every safe square remaining
-        safeSquares.parallelStream().forEach((candidateSquare) -> {
-            List<Integer> candidateSafeSquares = new ArrayList<>(safeSquares);
-            candidateSafeSquares.remove(candidateSquare);
-            try {
-                board.placePiece(piece, candidateSquare, candidateSafeSquares, candidate);
-                Map<Integer, Piece> newCandidate = new HashMap<>(candidate);
-                newCandidate.put(candidateSquare, piece);
-                if (!remainingPieces.isEmpty()) {
-                    // try to place remaining pieces
-                    placePieces(remainingPieces, board, candidateSafeSquares, newCandidate, solutions);
-                } else {
-                    // we got to a solution
-                    Map<Integer, Piece> solution = new HashMap<>(newCandidate);
-                    synchronized (solutions) {
-                        solutions.add(solution);
+        for (Integer candidateSquare : safeSquares) {
+            Integer lastTriedPosition = (triedPiecePosition.get(piece) != null ? triedPiecePosition.get(piece) : -1);
+            if (candidateSquare > lastTriedPosition) {
+                Map<Piece, Integer> newTriedPiecePosition = new HashMap<>();
+                newTriedPiecePosition.put(piece, candidateSquare);
+                List<Integer> candidateSafeSquares = new ArrayList<>(safeSquares);
+                candidateSafeSquares.remove(candidateSquare);
+                try {
+                    board.placePiece(piece, candidateSquare, candidateSafeSquares, candidate);
+                    Map<Integer, Piece> newCandidate = new HashMap<>(candidate);
+                    newCandidate.put(candidateSquare, piece);
+                    if (!remainingPieces.isEmpty()) {
+                        // try to place remaining pieces
+                        placePieces(remainingPieces, candidateSafeSquares, newCandidate, newTriedPiecePosition, solutionHandler);
+                    } else {
+                        // we got to a solution
+                        solutionsCount++;
+                        if (solutionsCount % 100000 == 0) {
+                            System.out.println(solutionsCount + " solutions so far");
+                        }
+                        solutionHandler.handleSolution(newCandidate);
                     }
+                } catch (ThreatensOccupiedSquare e) {
+                    // candidate failed
                 }
-            } catch (ThreatensOccupiedSquare e) {
-                // candidate failed
             }
-        });
+        }
     }
 
+    interface SolutionHandler {
+
+        void handleSolution(Map<Integer, Piece> solution);
+    }
 }

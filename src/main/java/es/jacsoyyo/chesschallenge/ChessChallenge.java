@@ -1,11 +1,15 @@
 package es.jacsoyyo.chesschallenge;
 
-import static es.jacsoyyo.chesschallenge.Piece.*;
+import static es.jacsoyyo.chesschallenge.Piece.B;
+import static es.jacsoyyo.chesschallenge.Piece.K;
+import static es.jacsoyyo.chesschallenge.Piece.N;
+import static es.jacsoyyo.chesschallenge.Piece.Q;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Created by jacobo on 13/05/15.
@@ -13,8 +17,11 @@ import java.util.Set;
 public class ChessChallenge {
 
     public static void main(String[] args) {
-        System.setProperty("java.util.concurrent.ForkJoinPool.common.parallelism", "4");
-        System.out.println("paralelismo" + System.getProperty("java.util.concurrent.ForkJoinPool.common.parallelism"));
+        ChessChallenge chessChallenge = new ChessChallenge();
+        chessChallenge.doChallange(args);
+    }
+
+    private void doChallange(String[] args) throws NumberFormatException {
         int rows;
         int columns;
         List<Piece> pieces = new ArrayList<>();
@@ -24,14 +31,7 @@ public class ChessChallenge {
             columns = 7;
             pieces = new ArrayList<>(Arrays.asList(Q, Q, B, B, K, K, N));
         } else if (args.length != 3) {
-            System.out.println("Invalid number of arguments!");
-            System.out.println("Usage: ChessChallenge M N P,P,P...");
-            System.out.println();
-            System.out.println("M\tnumber of rows");
-            System.out.println("N\tnumber of columns");
-            System.out.println("P,P,P...\tcomma separated list of pieces: (K)ing, (Q)ueen, (B)ishop, (R)ook or k(N)ight.");
-            System.out.println();
-            System.out.println("Example: 7 7 K,K,Q,Q,B,B,N");
+            printInstructions();
             return;
         } else {
             rows = Integer.parseInt(args[0]);
@@ -42,14 +42,18 @@ public class ChessChallenge {
             }
         }
 
+        List<Map<Integer, Piece>> solutions = new ArrayList<>();
+
         SolutionFinder chessChallenge = new SolutionFinder(rows, columns, pieces);
+        chessChallenge.findSolutions(c -> {
+            Map<Integer, Piece> solution = new HashMap<>(c);
+            solutions.add(solution);
+        });
 
-        Set<Map<Integer, Piece>> solutions = chessChallenge.findSolutions();
-
-        printSolutions(solutions);
+        //printSolutions(solutions);
     }
 
-    private static void printSolutions(Set<Map<Integer, Piece>> solutions) {
+    private static void printSolutions(Collection<Map<Integer, Piece>> solutions) {
 
         System.out.println();
         for (Map<Integer, Piece> solution : solutions) {
@@ -58,6 +62,17 @@ public class ChessChallenge {
             }
             System.out.println();
         }
+    }
+
+    private void printInstructions() {
+        System.out.println("Invalid number of arguments!");
+        System.out.println("Usage: ChessChallenge M N P,P,P...");
+        System.out.println();
+        System.out.println("M\tnumber of rows");
+        System.out.println("N\tnumber of columns");
+        System.out.println("P,P,P...\tcomma separated list of pieces: (K)ing, (Q)ueen, (B)ishop, (R)ook or k(N)ight.");
+        System.out.println();
+        System.out.println("Example: 7 7 K,K,Q,Q,B,B,N");
     }
 
 }
