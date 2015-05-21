@@ -34,8 +34,9 @@ public class SolutionFinder {
     /**
      * Returns found solutions
      *
-     * @return Set of solutions. Each one is a map where the key is the position
-     * (number) of the square
+     * @param solutionHandler called for every solution found
+     * 
+     * @return number of solutions found
      */
     public int findSolutions(SolutionHandler solutionHandler) {
 
@@ -56,11 +57,11 @@ public class SolutionFinder {
      * Recursive method the tries to place the remaning pieces.
      *
      * @param pieces remaining pieces to place on the board (at lease one)
-     * @param board the board
      * @param safeSquares list of safe squares (not threatened by previous
      * placed pieces)
      * @param candidate pieces already set on the board
-     * @param solutions accumulated solutions
+     * @param triedPiecePosition higher already position tried for each piece (to avoid duplicates)
+     * @param solutionHandler called for every solution
      */
     private void placePieces(List<Piece> pieces, List<Integer> safeSquares, Map<Integer, Piece> candidate, Map<Piece, Integer> triedPiecePosition, SolutionHandler solutionHandler) {
         Piece piece = pieces.get(0);
@@ -96,8 +97,16 @@ public class SolutionFinder {
         }
     }
 
-    interface SolutionHandler {
+    /**
+     * Handler for solutions
+     */
+    public interface SolutionHandler {
 
+        /**
+         * Method called for every solution
+         * 
+         * @param solution as a map with pieces position
+         */
         void handleSolution(Map<Integer, Piece> solution);
     }
 }

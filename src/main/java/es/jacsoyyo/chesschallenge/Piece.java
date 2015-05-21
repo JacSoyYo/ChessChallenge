@@ -1,7 +1,7 @@
 package es.jacsoyyo.chesschallenge;
 
 /**
- * Chess pieces (except pawn)-
+ * Chess pieces (except pawn)
  *
  * @author jacobo
  */
@@ -11,7 +11,7 @@ public enum Piece {
 
     /**
      * Calculates all possible movements, calling the provided method for each
-     * threatened squade
+     * one
      *
      * @param position
      * @param rows number of rows
@@ -80,8 +80,17 @@ public enum Piece {
         }
     }
 
-    interface UpdateSquare {
+    /**
+     * Callback called for every square visited by the piece
+     */
+    public interface UpdateSquare {
 
+        /**
+         * Called for every possible pice movement
+         * 
+         * @param position
+         * @throws ThreatensOccupiedSquare throw if the square is occupied
+         */
         void markUnsafe(Integer position) throws ThreatensOccupiedSquare;
     }
 
