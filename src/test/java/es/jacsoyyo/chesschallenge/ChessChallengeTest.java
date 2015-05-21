@@ -8,6 +8,8 @@ import static es.jacsoyyo.chesschallenge.Piece.R;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import static org.junit.Assert.assertEquals;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -19,11 +21,6 @@ import org.junit.Test;
 public class ChessChallengeTest {
 
     public ChessChallengeTest() {
-    }
-
-    public void algo() {
-        String name = new Object() {
-        }.getClass().getEnclosingMethod().getName();
     }
 
     @Test
