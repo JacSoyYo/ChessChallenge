@@ -67,7 +67,7 @@ public class Board {
      * placed piece.
      *
      * @param piece piece to place
-     * @param position position 
+     * @param position position
      * @param safeSquares board safe squares
      * @param placedPieces already placed pieces
      * @throws ThreatensOccupiedSquare if the piece would threaten another piece

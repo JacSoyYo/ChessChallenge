@@ -7,7 +7,6 @@ import static es.jacsoyyo.chesschallenge.Piece.Q;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -34,14 +33,14 @@ public class ChessChallenge {
             printInstructions();
             return;
         } else {
-            try{
-            rows = Integer.parseInt(args[0]);
-            columns = Integer.parseInt(args[1]);
-            List<String> piecesS = Arrays.asList(args[2].split(","));
-            for (String piece : piecesS) {
-                pieces.add(Piece.valueOf(piece));
-            }
-            } catch (Exception e){
+            try {
+                rows = Integer.parseInt(args[0]);
+                columns = Integer.parseInt(args[1]);
+                List<String> piecesS = Arrays.asList(args[2].split(","));
+                for (String piece : piecesS) {
+                    pieces.add(Piece.valueOf(piece));
+                }
+            } catch (Exception e) {
                 printInstructions();
                 return;
             }
