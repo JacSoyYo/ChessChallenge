@@ -25,7 +25,7 @@ public class NightTest {
         
         Set<Integer> threatenedSquares = new HashSet<>();
         aPiece.threatenedSquares(12, 5, 5, (Integer p) -> { threatenedSquares.add(p);});
-        assertThat(threatenedSquares.size()).isEqualTo(8);
+        assertThat(threatenedSquares).hasSize(8).containsOnly(1, 3, 5, 9, 15, 19, 21, 23);
     }
 
     @Test
@@ -33,6 +33,6 @@ public class NightTest {
         
         Set<Integer> threatenedSquares = new HashSet<>();
         aPiece.threatenedSquares(3, 5, 5, (Integer p) -> { threatenedSquares.add(p);});
-        assertThat(threatenedSquares.size()).isEqualTo(3);
+        assertThat(threatenedSquares).hasSize(3).containsOnly(6, 12, 14);
     }
 }

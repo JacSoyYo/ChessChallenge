@@ -25,7 +25,7 @@ public class KingTest {
         
         Set<Integer> threatenedSquares = new HashSet<>();
         aPiece.threatenedSquares(4, 3, 3, (Integer p) -> { threatenedSquares.add(p);});
-        assertThat(threatenedSquares.size()).isEqualTo(8);
+        assertThat(threatenedSquares).hasSize(8).containsOnly(0, 1, 2, 3, 5, 6, 7, 8);
     }
 
     @Test
@@ -33,6 +33,6 @@ public class KingTest {
         
         Set<Integer> threatenedSquares = new HashSet<>();
         aPiece.threatenedSquares(3, 5, 5, (Integer p) -> { threatenedSquares.add(p);});
-        assertThat(threatenedSquares.size()).isEqualTo(5);
+        assertThat(threatenedSquares).hasSize(5).containsOnly(2, 4, 7, 8, 9);
     }
 }

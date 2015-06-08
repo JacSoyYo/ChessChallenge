@@ -25,7 +25,7 @@ public class BishopTest {
         
         Set<Integer> threatenedSquares = new HashSet<>();
         aPiece.threatenedSquares(4, 3, 3, (Integer p) -> { threatenedSquares.add(p);});
-        assertThat(threatenedSquares.size()).isEqualTo(4);
+        assertThat(threatenedSquares).hasSize(4).containsOnly(0, 2, 6, 8);
     }
     
     @Test
@@ -33,7 +33,7 @@ public class BishopTest {
         
         Set<Integer> threatenedSquares = new HashSet<>();
         aPiece.threatenedSquares(3, 5, 5, (Integer p) -> { threatenedSquares.add(p);});
-        assertThat(threatenedSquares.size()).isEqualTo(4);
+        assertThat(threatenedSquares).hasSize(4).containsOnly(7, 9, 11, 15);
     }
     
 }

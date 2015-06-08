@@ -25,14 +25,14 @@ public class RookTest {
         
         Set<Integer> threatenedSquares = new HashSet<>();
         aPiece.threatenedSquares(4, 3, 3, (Integer p) -> { threatenedSquares.add(p);});
-        assertThat(threatenedSquares.size()).isEqualTo(4);
+        assertThat(threatenedSquares).hasSize(4).containsOnly(1, 3, 5, 7);
     }
 
     @Test
     public void rook5x5boardPosition3() throws ThreatensOccupiedSquare{
         
         Set<Integer> threatenedSquares = new HashSet<>();
-        aPiece.threatenedSquares(4, 3, 3, (Integer p) -> { threatenedSquares.add(p);});
-        assertThat(threatenedSquares.size()).isEqualTo(4);
+        aPiece.threatenedSquares(3, 5, 5, (Integer p) -> { threatenedSquares.add(p);});
+        assertThat(threatenedSquares).hasSize(8).containsOnly(0, 1, 2, 4, 8, 13, 18, 23);
     }
 }
