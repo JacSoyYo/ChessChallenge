@@ -27,7 +27,7 @@ public enum Piece {
                 for (int i = row - 1; i < row + 2 && i < rows; i++) {
                     if (i >= 0) {
                         for (int j = column - 1; j < column + 2 && j < columns; j++) {
-                            if (j >= 0) {
+                            if (j >= 0 && (i != row || j != column)) {
                                 threatenedSquare.markUnsafe(j + i * columns);
                             }
                         }
@@ -39,24 +39,30 @@ public enum Piece {
                 B.threatenedSquares(position, rows, columns, threatenedSquare);
                 break;
             case B:
-                for (int i = row, j = column; i < rows && j < columns; i++, j++) {
+                for (int i = row + 1, j = column + 1; i < rows && j < columns; i++, j++) {
                     threatenedSquare.markUnsafe(j + i * columns);
                 }
-                for (int i = row, j = column; i < rows && j >= 0; i++, j--) {
+                for (int i = row + 1, j = column - 1; i < rows && j >= 0; i++, j--) {
                     threatenedSquare.markUnsafe(j + i * columns);
                 }
-                for (int i = row, j = column; i >= 0 && j < columns; i--, j++) {
+                for (int i = row - 1, j = column + 1; i >= 0 && j < columns; i--, j++) {
                     threatenedSquare.markUnsafe(j + i * columns);
                 }
-                for (int i = row, j = column; i >= 0 && j >= 0; i--, j--) {
+                for (int i = row - 1, j = column - 1; i >= 0 && j >= 0; i--, j--) {
                     threatenedSquare.markUnsafe(j + i * columns);
                 }
                 break;
             case R:
-                for (int i = 0; i < columns; i++) {
-                    threatenedSquare.markUnsafe(i + row * columns);
+                for (int j = 0; j < column; j++) {
+                    threatenedSquare.markUnsafe(j + row * columns);
                 }
-                for (int i = 0; i < rows; i++) {
+                for (int j = column + 1; j < columns; j++) {
+                    threatenedSquare.markUnsafe(j + row * columns);
+                }
+                for (int i = 0; i < row; i++) {
+                    threatenedSquare.markUnsafe(column + i * columns);
+                }
+                for (int i = row + 1; i < rows; i++) {
                     threatenedSquare.markUnsafe(column + i * columns);
                 }
                 break;
