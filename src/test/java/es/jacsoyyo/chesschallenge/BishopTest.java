@@ -5,8 +5,6 @@
  */
 package es.jacsoyyo.chesschallenge;
 
-import es.jacsoyyo.chesschallenge.Piece;
-import es.jacsoyyo.chesschallenge.ThreatensOccupiedSquare;
 import static org.assertj.core.api.Assertions.*;
 import static es.jacsoyyo.chesschallenge.Piece.*;
 
@@ -29,4 +27,13 @@ public class BishopTest {
         aPiece.threatenedSquares(4, 3, 3, (Integer p) -> { threatenedSquares.add(p);});
         assertThat(threatenedSquares.size()).isEqualTo(4);
     }
+    
+    @Test
+    public void bishop5x5boardPosition3() throws ThreatensOccupiedSquare{
+        
+        Set<Integer> threatenedSquares = new HashSet<>();
+        aPiece.threatenedSquares(3, 5, 5, (Integer p) -> { threatenedSquares.add(p);});
+        assertThat(threatenedSquares.size()).isEqualTo(4);
+    }
+    
 }

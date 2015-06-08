@@ -5,8 +5,6 @@
  */
 package es.jacsoyyo.chesschallenge;
 
-import es.jacsoyyo.chesschallenge.Piece;
-import es.jacsoyyo.chesschallenge.ThreatensOccupiedSquare;
 import static org.assertj.core.api.Assertions.*;
 import static es.jacsoyyo.chesschallenge.Piece.*;
 
@@ -24,6 +22,14 @@ public class RookTest {
     
     @Test
     public void rook3x3boardPosition4() throws ThreatensOccupiedSquare{
+        
+        Set<Integer> threatenedSquares = new HashSet<>();
+        aPiece.threatenedSquares(4, 3, 3, (Integer p) -> { threatenedSquares.add(p);});
+        assertThat(threatenedSquares.size()).isEqualTo(4);
+    }
+
+    @Test
+    public void rook5x5boardPosition3() throws ThreatensOccupiedSquare{
         
         Set<Integer> threatenedSquares = new HashSet<>();
         aPiece.threatenedSquares(4, 3, 3, (Integer p) -> { threatenedSquares.add(p);});
