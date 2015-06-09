@@ -15,6 +15,30 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class ChessChallenge {
 
+    private final SolutionFinder chessChallenge;
+
+    private ChessChallenge(int rows, int columns, List<Piece> pieces) {
+        chessChallenge = new SolutionFinder(rows, columns, pieces);
+    }
+    
+    private void doChallange() {
+        
+        final AtomicInteger solutionCounter = new AtomicInteger(0);
+        
+        long before = System.currentTimeMillis();
+        
+        chessChallenge.findSolutions((Map<Integer, Piece> c) -> {
+            solutionCounter.incrementAndGet();
+            if (solutionCounter.get() % 100000 == 0) {
+                System.out.println(solutionCounter.get() + " solutions so far");
+            }
+        });
+        
+        long after = System.currentTimeMillis();
+        System.out.println(solutionCounter.get() + " solutions found in " + (after - before) + "ms");
+
+    }
+
     public static void main(String[] args) {
         int rows;
         int columns;
@@ -42,28 +66,8 @@ public class ChessChallenge {
             }
         }
         
-        ChessChallenge chessChallenge = new ChessChallenge();
-        chessChallenge.doChallange(rows, columns, pieces);
-    }
-
-    private void doChallange(int rows, int columns, List<Piece> pieces) throws NumberFormatException {
-
-        SolutionFinder chessChallenge = new SolutionFinder(rows, columns, pieces);
-        
-        final AtomicInteger solutionCounter = new AtomicInteger(0);
-        
-        long before = System.currentTimeMillis();
-        
-        chessChallenge.findSolutions((Map<Integer, Piece> c) -> {
-            solutionCounter.incrementAndGet();
-            if (solutionCounter.get() % 100000 == 0) {
-                System.out.println(solutionCounter.get() + " solutions so far");
-            }
-        });
-        
-        long after = System.currentTimeMillis();
-        System.out.println(solutionCounter.get() + " solutions found in " + (after - before) + "ms");
-
+        ChessChallenge chessChallenge = new ChessChallenge(rows, columns, pieces);
+        chessChallenge.doChallange();
     }
 
     private static void printInstructions() {
