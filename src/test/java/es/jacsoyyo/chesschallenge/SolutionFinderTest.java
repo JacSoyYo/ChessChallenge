@@ -19,7 +19,7 @@ public class SolutionFinderTest {
     }
 
     @Test
-    public void test4Rooks3x3() {
+    public void test4Rooks3x3board() {
         int rows = 3;
         int columns = 3;
         List<Piece> pieces = new ArrayList<>(Arrays.asList(R, R, R, R));
@@ -31,7 +31,7 @@ public class SolutionFinderTest {
     }
 
     @Test
-    public void test2Kings1Rook3x3() {
+    public void test2Kings1Rook3x3board() {
         int rows = 3;
         int columns = 3;
         List<Piece> pieces = new ArrayList<>(Arrays.asList(K, K, R));
@@ -43,7 +43,7 @@ public class SolutionFinderTest {
     }
 
     @Test
-    public void test2Rooks4Knights4x4() {
+    public void test2Rooks4Knights4x4board() {
         int rows = 4;
         int columns = 4;
         List<Piece> pieces = new ArrayList<>(Arrays.asList(R, R, N, N, N, N));
@@ -55,7 +55,7 @@ public class SolutionFinderTest {
     }
 
     @Test
-    public void test8Queens8x8() {
+    public void test8Queens8x8board() {
         int rows = 8;
         int columns = 8;
         List<Piece> pieces = new ArrayList<>(Arrays.asList(Q, Q, Q, Q, Q, Q, Q, Q));
@@ -66,9 +66,9 @@ public class SolutionFinderTest {
         assertThat(solutions).isEqualTo(92);
     }
 
-    //@Ignore("Too long for a unit test")
+    @Ignore("Too long for a unit test")
     @Test
-    public void test2Kings2Queens2Bishops1Knight7x7() {
+    public void test2Kings2Queens2Bishops1Knight7x7board() {
         int rows = 7;
         int columns = 7;
         List<Piece> pieces = new ArrayList<>(Arrays.asList(Q, Q, B, B, K, K, N));
