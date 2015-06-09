@@ -6,6 +6,7 @@ import static org.assertj.core.api.Assertions.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -24,10 +25,11 @@ public class SolutionFinderTest {
         int columns = 3;
         List<Piece> pieces = new ArrayList<>(Arrays.asList(R, R, R, R));
         SolutionFinder solutionFinder = new SolutionFinder(rows, columns, pieces);
+        final AtomicInteger solutionCounter = new AtomicInteger(0);
         
-        int solutions = solutionFinder.findSolutions(c -> {});
+        solutionFinder.findSolutions(c -> { solutionCounter.incrementAndGet(); });
         
-        assertThat(solutions).isEqualTo(0);
+        assertThat(solutionCounter.get()).isEqualTo(0);
     }
 
     @Test
@@ -36,10 +38,11 @@ public class SolutionFinderTest {
         int columns = 3;
         List<Piece> pieces = new ArrayList<>(Arrays.asList(K, K, R));
         SolutionFinder solutionFinder = new SolutionFinder(rows, columns, pieces);
+        final AtomicInteger solutionCounter = new AtomicInteger(0);
         
-        int solutions = solutionFinder.findSolutions(c -> {});
+        solutionFinder.findSolutions(c -> { solutionCounter.incrementAndGet(); });
         
-        assertThat(solutions).isEqualTo(4);
+        assertThat(solutionCounter.get()).isEqualTo(4);
     }
 
     @Test
@@ -48,10 +51,11 @@ public class SolutionFinderTest {
         int columns = 4;
         List<Piece> pieces = new ArrayList<>(Arrays.asList(R, R, N, N, N, N));
         SolutionFinder solutionFinder = new SolutionFinder(rows, columns, pieces);
+        final AtomicInteger solutionCounter = new AtomicInteger(0);
         
-        int solutions = solutionFinder.findSolutions(c -> {});
+        solutionFinder.findSolutions(c -> { solutionCounter.incrementAndGet(); });
         
-        assertThat(solutions).isEqualTo(8);
+        assertThat(solutionCounter.get()).isEqualTo(8);
     }
 
     @Test
@@ -60,10 +64,11 @@ public class SolutionFinderTest {
         int columns = 8;
         List<Piece> pieces = new ArrayList<>(Arrays.asList(Q, Q, Q, Q, Q, Q, Q, Q));
         SolutionFinder solutionFinder = new SolutionFinder(rows, columns, pieces);
+        final AtomicInteger solutionCounter = new AtomicInteger(0);
         
-        int solutions = solutionFinder.findSolutions(c -> {});
+        solutionFinder.findSolutions(c -> { solutionCounter.incrementAndGet(); });
         
-        assertThat(solutions).isEqualTo(92);
+        assertThat(solutionCounter.get()).isEqualTo(92);
     }
 
     @Ignore("Too long for a unit test")
@@ -73,9 +78,10 @@ public class SolutionFinderTest {
         int columns = 7;
         List<Piece> pieces = new ArrayList<>(Arrays.asList(Q, Q, B, B, K, K, N));
         SolutionFinder solutionFinder = new SolutionFinder(rows, columns, pieces);
+        final AtomicInteger solutionCounter = new AtomicInteger(0);
         
-        int solutions = solutionFinder.findSolutions(c -> {});
+        solutionFinder.findSolutions(c -> { solutionCounter.incrementAndGet(); });
         
-        assertThat(solutions).isEqualTo(3063828);
+        assertThat(solutionCounter.get()).isEqualTo(3063828);
     }
 }

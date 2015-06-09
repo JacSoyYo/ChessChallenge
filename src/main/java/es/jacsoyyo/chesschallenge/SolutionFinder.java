@@ -16,8 +16,6 @@ public class SolutionFinder {
     private final Board board;
     private final List<Piece> pieces;
 
-    private int solutionsCount = 0;
-
     /**
      * Creates a new finder
      *
@@ -35,22 +33,14 @@ public class SolutionFinder {
      * Returns found solutions
      *
      * @param solutionHandler called for every solution found
-     * 
-     * @return number of solutions found
      */
-    public int findSolutions(SolutionHandler solutionHandler) {
+    public void findSolutions(SolutionHandler solutionHandler) {
 
         List<Integer> safeSquares = board.getSquares();
         Map<Integer, Piece> candidate = new HashMap<>(pieces.size());
 
-        long before = System.currentTimeMillis();
         // Try to place pieces
         placePieces(pieces, safeSquares, candidate, new HashMap<>(), solutionHandler);
-        long after = System.currentTimeMillis();
-
-        System.out.println(solutionsCount + " solutions found in " + (after - before) + "ms");
-
-        return solutionsCount;
     }
 
     /**
@@ -84,10 +74,6 @@ public class SolutionFinder {
                         placePieces(remainingPieces, candidateSafeSquares, newCandidate, newTriedPiecePosition, solutionHandler);
                     } else {
                         // we got to a solution
-                        solutionsCount++;
-                        if (solutionsCount % 100000 == 0) {
-                            System.out.println(solutionsCount + " solutions so far");
-                        }
                         solutionHandler.handleSolution(newCandidate);
                     }
                 } catch (ThreatensOccupiedSquare e) {

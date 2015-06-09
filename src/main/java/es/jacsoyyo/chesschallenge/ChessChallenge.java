@@ -6,9 +6,9 @@ import static es.jacsoyyo.chesschallenge.Piece.N;
 import static es.jacsoyyo.chesschallenge.Piece.Q;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Created by jacobo on 13/05/15.
@@ -16,14 +16,10 @@ import java.util.Map;
 public class ChessChallenge {
 
     public static void main(String[] args) {
-        ChessChallenge chessChallenge = new ChessChallenge();
-        chessChallenge.doChallange(args);
-    }
-
-    private void doChallange(String[] args) throws NumberFormatException {
         int rows;
         int columns;
         List<Piece> pieces = new ArrayList<>();
+        
         if (args.length == 0) {
             System.out.println("No parameters? OK, will do 7x7 K,K,Q,Q,B,B,N then.");
             rows = 7;
@@ -45,30 +41,32 @@ public class ChessChallenge {
                 return;
             }
         }
+        
+        ChessChallenge chessChallenge = new ChessChallenge();
+        chessChallenge.doChallange(rows, columns, pieces);
+    }
 
-        List<Map<Integer, Piece>> solutions = new ArrayList<>();
+    private void doChallange(int rows, int columns, List<Piece> pieces) throws NumberFormatException {
 
         SolutionFinder chessChallenge = new SolutionFinder(rows, columns, pieces);
-        chessChallenge.findSolutions(c -> {
-            //Map<Integer, Piece> solution = new HashMap<>(c);
-            //solutions.add(solution);
-        });
-
-        //printSolutions(solutions);
-    }
-
-    private static void printSolutions(Collection<Map<Integer, Piece>> solutions) {
-
-        System.out.println();
-        for (Map<Integer, Piece> solution : solutions) {
-            for (Integer position : solution.keySet()) {
-                System.out.print(position + " - " + solution.get(position) + " : ");
+        
+        final AtomicInteger solutionCounter = new AtomicInteger(0);
+        
+        long before = System.currentTimeMillis();
+        
+        chessChallenge.findSolutions((Map<Integer, Piece> c) -> {
+            solutionCounter.incrementAndGet();
+            if (solutionCounter.get() % 100000 == 0) {
+                System.out.println(solutionCounter.get() + " solutions so far");
             }
-            System.out.println();
-        }
+        });
+        
+        long after = System.currentTimeMillis();
+        System.out.println(solutionCounter.get() + " solutions found in " + (after - before) + "ms");
+
     }
 
-    private void printInstructions() {
+    private static void printInstructions() {
         System.out.println("Invalid number of arguments!");
         System.out.println("Usage: ChessChallenge M N P,P,P...");
         System.out.println();
