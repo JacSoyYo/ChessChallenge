@@ -30,7 +30,7 @@ public class SolutionFinder {
     }
 
     /**
-     * Returns found solutions
+     * Find solutions and call the handler for each one of them
      *
      * @param solutionHandler called for every solution found
      */
