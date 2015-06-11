@@ -54,7 +54,7 @@ public class Board {
      * @param placedPieces already placed pieces
      * @throws ThreatensOccupiedSquare if the square is occupied
      */
-    private void updateSquares(Integer position, List<Integer> safeSquares, Map<Integer, Piece> placedPieces) throws ThreatensOccupiedSquare {
+    private void updateSquares(Integer position, List<Integer> safeSquares, Map<Integer, Piece> placedPieces) {
         if (placedPieces.keySet().contains(position)) {
             throw new ThreatensOccupiedSquare();
         }
@@ -72,7 +72,7 @@ public class Board {
      * @param placedPieces already placed pieces
      * @throws ThreatensOccupiedSquare if the piece would threaten another piece
      */
-    public void placePiece(Piece piece, Integer position, List<Integer> safeSquares, Map<Integer, Piece> placedPieces) throws ThreatensOccupiedSquare {
+    public void placePiece(Piece piece, Integer position, List<Integer> safeSquares, Map<Integer, Piece> placedPieces) {
         piece.threatenedSquares(position, rows, columns, p -> updateSquares(p, safeSquares, placedPieces));
     }
 

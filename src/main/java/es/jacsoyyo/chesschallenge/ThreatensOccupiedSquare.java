@@ -5,7 +5,7 @@ package es.jacsoyyo.chesschallenge;
  *
  * @author jacobo
  */
-class ThreatensOccupiedSquare extends Exception {
+class ThreatensOccupiedSquare extends RuntimeException {
 
     public ThreatensOccupiedSquare() {
     }
