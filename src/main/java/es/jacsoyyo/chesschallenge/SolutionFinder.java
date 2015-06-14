@@ -1,7 +1,7 @@
 package es.jacsoyyo.chesschallenge;
 
+import es.jacsoyyo.chesschallenge.pieces.Piece;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,7 +26,6 @@ public class SolutionFinder {
     public SolutionFinder(int rows, int columns, List<Piece> pieces) {
         this.board = new Board(rows, columns);
         this.pieces = new ArrayList(pieces);
-        Collections.sort(this.pieces);
     }
 
     /**

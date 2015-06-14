@@ -1,6 +1,12 @@
 package es.jacsoyyo.chesschallenge;
 
-import static es.jacsoyyo.chesschallenge.Piece.*;
+import es.jacsoyyo.chesschallenge.pieces.Knight;
+import es.jacsoyyo.chesschallenge.pieces.King;
+import es.jacsoyyo.chesschallenge.pieces.Piece;
+import es.jacsoyyo.chesschallenge.pieces.Bishop;
+import es.jacsoyyo.chesschallenge.pieces.Queen;
+import es.jacsoyyo.chesschallenge.pieces.Rook;
+import static es.jacsoyyo.chesschallenge.pieces.Piece.*;
 import static org.assertj.core.api.Assertions.*;
 
 import java.util.ArrayList;
@@ -23,7 +29,7 @@ public class SolutionFinderTest {
     public void test4Rooks3x3board() {
         int rows = 3;
         int columns = 3;
-        List<Piece> pieces = new ArrayList<>(Arrays.asList(R, R, R, R));
+        List<Piece> pieces = new ArrayList<>(Arrays.asList(new Rook(), new Rook(), new Rook(), new Rook()));
         SolutionFinder solutionFinder = new SolutionFinder(rows, columns, pieces);
         final AtomicInteger solutionCounter = new AtomicInteger(0);
         
@@ -36,7 +42,7 @@ public class SolutionFinderTest {
     public void test2Kings1Rook3x3board() {
         int rows = 3;
         int columns = 3;
-        List<Piece> pieces = new ArrayList<>(Arrays.asList(K, K, R));
+        List<Piece> pieces = new ArrayList<>(Arrays.asList(new King(), new King(), new Rook()));
         SolutionFinder solutionFinder = new SolutionFinder(rows, columns, pieces);
         final AtomicInteger solutionCounter = new AtomicInteger(0);
         
@@ -49,7 +55,7 @@ public class SolutionFinderTest {
     public void test2Rooks4Knights4x4board() {
         int rows = 4;
         int columns = 4;
-        List<Piece> pieces = new ArrayList<>(Arrays.asList(R, R, N, N, N, N));
+        List<Piece> pieces = new ArrayList<>(Arrays.asList(new Rook(), new Rook(), new Knight(), new Knight(), new Knight(), new Knight()));
         SolutionFinder solutionFinder = new SolutionFinder(rows, columns, pieces);
         final AtomicInteger solutionCounter = new AtomicInteger(0);
         
@@ -62,7 +68,7 @@ public class SolutionFinderTest {
     public void test8Queens8x8board() {
         int rows = 8;
         int columns = 8;
-        List<Piece> pieces = new ArrayList<>(Arrays.asList(Q, Q, Q, Q, Q, Q, Q, Q));
+        List<Piece> pieces = new ArrayList<>(Arrays.asList(new Queen(), new Queen(), new Queen(), new Queen(), new Queen(), new Queen(), new Queen(), new Queen()));
         SolutionFinder solutionFinder = new SolutionFinder(rows, columns, pieces);
         final AtomicInteger solutionCounter = new AtomicInteger(0);
         
@@ -76,7 +82,7 @@ public class SolutionFinderTest {
     public void test2Kings2Queens2Bishops1Knight7x7board() {
         int rows = 7;
         int columns = 7;
-        List<Piece> pieces = new ArrayList<>(Arrays.asList(Q, Q, B, B, K, K, N));
+        List<Piece> pieces = new ArrayList<>(Arrays.asList(new Queen(), new Queen(), new Bishop(), new Bishop(), new King(), new King(), new Knight()));
         SolutionFinder solutionFinder = new SolutionFinder(rows, columns, pieces);
         final AtomicInteger solutionCounter = new AtomicInteger(0);
         

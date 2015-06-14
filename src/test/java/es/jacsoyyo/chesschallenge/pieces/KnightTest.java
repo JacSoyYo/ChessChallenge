@@ -3,10 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package es.jacsoyyo.chesschallenge;
+package es.jacsoyyo.chesschallenge.pieces;
 
+import es.jacsoyyo.chesschallenge.pieces.Knight;
+import es.jacsoyyo.chesschallenge.pieces.Piece;
 import static org.assertj.core.api.Assertions.*;
-import static es.jacsoyyo.chesschallenge.Piece.*;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -16,23 +17,23 @@ import org.junit.Test;
  *
  * @author jacobo
  */
-public class NightTest {
+public class KnightTest {
     
-    Piece aPiece = N;
+    Piece aPiece = new Knight();
     
     @Test
-    public void night5x5boardPosition12() throws ThreatensOccupiedSquare{
+    public void night5x5boardPosition12() {
         
         Set<Integer> threatenedSquares = new HashSet<>();
-        aPiece.threatenedSquares(12, 5, 5, (Integer p) -> { threatenedSquares.add(p);});
+        aPiece.visitPossibleMoves(2, 2, 5, 5, (p) -> { threatenedSquares.add(p);});
         assertThat(threatenedSquares).hasSize(8).containsOnly(1, 3, 5, 9, 15, 19, 21, 23);
     }
 
     @Test
-    public void night5x5boardPosition3() throws ThreatensOccupiedSquare{
+    public void night5x5boardPosition3() {
         
         Set<Integer> threatenedSquares = new HashSet<>();
-        aPiece.threatenedSquares(3, 5, 5, (Integer p) -> { threatenedSquares.add(p);});
+        aPiece.visitPossibleMoves(0, 3, 5, 5, (p) -> { threatenedSquares.add(p);});
         assertThat(threatenedSquares).hasSize(3).containsOnly(6, 12, 14);
     }
 }

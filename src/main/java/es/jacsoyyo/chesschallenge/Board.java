@@ -1,5 +1,6 @@
 package es.jacsoyyo.chesschallenge;
 
+import es.jacsoyyo.chesschallenge.pieces.Piece;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -54,11 +55,11 @@ public class Board {
      * @param placedPieces already placed pieces
      * @throws ThreatensOccupiedSquare if the square is occupied
      */
-    private void updateSquares(Integer position, List<Integer> safeSquares, Map<Integer, Piece> placedPieces) {
+    private void updateSquares(int position, List<Integer> safeSquares, Map<Integer, Piece> placedPieces) {
         if (placedPieces.keySet().contains(position)) {
             throw new ThreatensOccupiedSquare();
         }
-        safeSquares.remove(position);
+        safeSquares.remove(new Integer(position));
     }
 
     /**
@@ -72,8 +73,10 @@ public class Board {
      * @param placedPieces already placed pieces
      * @throws ThreatensOccupiedSquare if the piece would threaten another piece
      */
-    public void placePiece(Piece piece, Integer position, List<Integer> safeSquares, Map<Integer, Piece> placedPieces) {
-        piece.threatenedSquares(position, rows, columns, p -> updateSquares(p, safeSquares, placedPieces));
+    public void placePiece(Piece piece, int position, List<Integer> safeSquares, Map<Integer, Piece> placedPieces) {
+        int row = position / rows;
+        int column = position - (row * columns);        
+        piece.visitPossibleMoves(row, column, rows, columns, p -> updateSquares(p, safeSquares, placedPieces));
     }
 
 }
