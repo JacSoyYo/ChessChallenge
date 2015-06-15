@@ -47,11 +47,7 @@ public class SolutionFinder {
      * Recursive method the tries to place the remaning pieces.
      *
      * @param pieces remaining pieces to place on the board (at lease one)
-     * @param safeSquares list of safe squares (not threatened by previous
-     * placed pieces)
-     * @param candidate pieces already set on the board
      * @param triedPiecePosition higher already position tried for each piece (to avoid duplicates)
-     * @param solutionHandler called for every solution
      */
     private void placePieces(List<Piece> pieces, Map<Piece, Integer> triedPiecePosition) {
         Piece piece = pieces.get(0);

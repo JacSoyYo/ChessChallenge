@@ -18,7 +18,6 @@ public abstract class Piece {
          * Called for every possible pice movement
          * 
          * @param position
-         * @throws ThreatensOccupiedSquare throw if the square is occupied
          */
         void visitSquare(int position);
     }

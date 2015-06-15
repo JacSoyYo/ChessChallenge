@@ -16,12 +16,12 @@ import java.util.Map;
  */
 public class Board {
 
-    private int rows;
-    private int columns;
+    private final int rows;
+    private final int columns;
 
     private State state;
     
-    private Deque<State> savedStates;
+    private final Deque<State> savedStates;
     
     /**
      * Creates a new board with the indicated dimensions
@@ -33,7 +33,7 @@ public class Board {
         this.rows = rows;
         this.columns = columns;
 
-        this.savedStates = new ArrayDeque<State>();
+        this.savedStates = new ArrayDeque<>();
         
         this.state = new State();
         
