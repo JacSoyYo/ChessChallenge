@@ -2,6 +2,7 @@ package es.jacsoyyo.chesschallenge;
 
 import es.jacsoyyo.chesschallenge.pieces.Piece;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -16,7 +17,8 @@ public class Board {
     private int columns;
 
     private final List<Integer> squares;
-
+    private Map<Integer, Piece> placedPieces;
+    
     /**
      * Creates a new board with the indicated dimensions
      *
@@ -35,6 +37,7 @@ public class Board {
             }
         }
 
+        placedPieces = new HashMap<>();
     }
 
     /**
@@ -44,6 +47,10 @@ public class Board {
      */
     public List<Integer> getSquares() {
         return squares;
+    }
+
+    public Map<Integer, Piece> getPlacedPieces() {
+        return placedPieces;
     }
 
     /**
@@ -77,6 +84,7 @@ public class Board {
         int row = position / rows;
         int column = position - (row * columns);        
         piece.visitPossibleMoves(row, column, rows, columns, p -> updateSquares(p, safeSquares, placedPieces));
+        this.placedPieces.put(position, piece);
     }
 
 }

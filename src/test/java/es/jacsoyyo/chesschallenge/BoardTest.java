@@ -10,11 +10,11 @@ import es.jacsoyyo.chesschallenge.pieces.Piece;
 import es.jacsoyyo.chesschallenge.pieces.Rook;
 import static org.assertj.core.api.Assertions.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 
 import java.util.List;
 import java.util.Map;
+import org.assertj.core.data.MapEntry;
 import org.junit.Test;
 
 /**
@@ -25,8 +25,10 @@ public class BoardTest {
     
     @Test
     public void testGetSquares() {
-        Board instance = new Board(3, 3);
-        List<Integer> result = instance.getSquares();
+        Board board = new Board(3, 3);
+        
+        List<Integer> result = board.getSquares();
+        
         assertThat(result).containsOnly(0, 1, 2, 3, 4, 5, 6, 7, 8);
     }
 
@@ -43,6 +45,7 @@ public class BoardTest {
         board.placePiece(piece, position, safeSquares, placedPieces);
         
         assertThat(safeSquares).containsOnly(4);
+        assertThat(board.getPlacedPieces()).containsOnly(MapEntry.entry(position, piece));
     }
     
     @Test
