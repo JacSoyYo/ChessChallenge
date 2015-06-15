@@ -37,12 +37,10 @@ public class SolutionFinder {
     public void findSolutions(SolutionHandler solutionHandler) {
 
         this.solutionHandler = solutionHandler;
-        
-        List<Integer> safeSquares = new ArrayList(board.getSquares());
-        Map<Integer, Piece> candidate = new HashMap<>(pieces.size());
 
-        // Try to place pieces
-        placePieces(pieces, safeSquares, candidate, new HashMap<>());
+        Map<Piece, Integer> triedPiecePosition = new HashMap<>();
+        
+        placePieces(pieces, triedPiecePosition);
     }
 
     /**
@@ -55,31 +53,30 @@ public class SolutionFinder {
      * @param triedPiecePosition higher already position tried for each piece (to avoid duplicates)
      * @param solutionHandler called for every solution
      */
-    private void placePieces(List<Piece> pieces, List<Integer> safeSquares, Map<Integer, Piece> candidate, Map<Piece, Integer> triedPiecePosition) {
+    private void placePieces(List<Piece> pieces, Map<Piece, Integer> triedPiecePosition) {
         Piece piece = pieces.get(0);
         List<Piece> remainingPieces = new ArrayList<>(pieces);
         remainingPieces.remove(0);
         // for every safe square remaining
-        for (Integer candidateSquare : safeSquares) {
+        for (Integer candidateSquare : board.getSafeSquares()) {
             Integer lastTriedPosition = (triedPiecePosition.get(piece) != null ? triedPiecePosition.get(piece) : -1);
             if (candidateSquare > lastTriedPosition) {
                 Map<Piece, Integer> newTriedPiecePosition = new HashMap<>();
                 newTriedPiecePosition.put(piece, candidateSquare);
-                List<Integer> candidateSafeSquares = new ArrayList<>(safeSquares);
-                candidateSafeSquares.remove(candidateSquare);
+                board.pushState();
                 try {
-                    board.placePiece(piece, candidateSquare, candidateSafeSquares, candidate);
-                    Map<Integer, Piece> newCandidate = new HashMap<>(candidate);
-                    newCandidate.put(candidateSquare, piece);
+                    board.placePiece(piece, candidateSquare);
                     if (!remainingPieces.isEmpty()) {
                         // try to place remaining pieces
-                        placePieces(remainingPieces, candidateSafeSquares, newCandidate, newTriedPiecePosition);
+                        placePieces(remainingPieces, newTriedPiecePosition);
                     } else {
                         // we got to a solution
-                        this.solutionHandler.handleSolution(newCandidate);
+                        this.solutionHandler.handleSolution(board.getPlacedPieces());
                     }
                 } catch (ThreatensOccupiedSquare e) {
                     // candidate failed
+                } finally {
+                    board.popState();
                 }
             }
         }
