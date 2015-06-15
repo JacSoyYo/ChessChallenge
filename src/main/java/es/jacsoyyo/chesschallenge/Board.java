@@ -65,46 +65,11 @@ public class Board {
         return this.state.placedPieces;
     }
 
-    /**
-     * Updates a square, removing it from safe squares. Throws exception if
-     * square is occupied.
-     *
-     * @param position square to update
-     * @param safeSquares list of safe (unthreatened) squares remaining
-     * @param placedPieces already placed pieces
-     * @throws ThreatensOccupiedSquare if the square is occupied
-     */
-    private void updateSquares(int position, List<Integer> safeSquares, Map<Integer, Piece> placedPieces) {
-        if (placedPieces.keySet().contains(position)) {
-            throw new ThreatensOccupiedSquare();
-        }
-        safeSquares.remove(new Integer(position));
-        this.state.safeSquares.remove(new Integer(position));
-    }
-
     private void updateSquares(int position) {
         if (this.state.placedPieces.keySet().contains(position)) {
             throw new ThreatensOccupiedSquare();
         }
         this.state.safeSquares.remove(new Integer(position));
-    }
-
-    /**
-     * Places the piece on the square, removing threatened squares from remining
-     * safe squares. Throws an exception if the piece threatens an already
-     * placed piece.
-     *
-     * @param piece piece to place
-     * @param position position
-     * @param safeSquares board safe squares
-     * @param placedPieces already placed pieces
-     * @throws ThreatensOccupiedSquare if the piece would threaten another piece
-     */
-    public void placePiece(Piece piece, int position, List<Integer> safeSquares, Map<Integer, Piece> placedPieces) {
-        int row = position / rows;
-        int column = position - (row * columns);        
-        piece.visitPossibleMoves(row, column, rows, columns, p -> updateSquares(p, safeSquares, placedPieces));
-        this.state.placedPieces.put(position, piece);
     }
 
     public void placePiece(Piece piece, int position) {
