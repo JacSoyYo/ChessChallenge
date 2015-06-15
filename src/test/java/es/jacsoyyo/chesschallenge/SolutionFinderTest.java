@@ -6,7 +6,6 @@ import es.jacsoyyo.chesschallenge.pieces.Piece;
 import es.jacsoyyo.chesschallenge.pieces.Bishop;
 import es.jacsoyyo.chesschallenge.pieces.Queen;
 import es.jacsoyyo.chesschallenge.pieces.Rook;
-import static es.jacsoyyo.chesschallenge.pieces.Piece.*;
 import static org.assertj.core.api.Assertions.*;
 
 import java.util.ArrayList;

@@ -5,10 +5,7 @@
  */
 package es.jacsoyyo.chesschallenge.pieces;
 
-import es.jacsoyyo.chesschallenge.pieces.King;
-import es.jacsoyyo.chesschallenge.pieces.Piece;
 import static org.assertj.core.api.Assertions.*;
-import static es.jacsoyyo.chesschallenge.pieces.Piece.*;
 
 import java.util.HashSet;
 import java.util.Set;

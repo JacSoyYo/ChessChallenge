@@ -9,11 +9,8 @@ import es.jacsoyyo.chesschallenge.pieces.King;
 import es.jacsoyyo.chesschallenge.pieces.Piece;
 import es.jacsoyyo.chesschallenge.pieces.Rook;
 import static org.assertj.core.api.Assertions.*;
-import java.util.ArrayList;
-import java.util.HashMap;
 
 import java.util.List;
-import java.util.Map;
 import org.assertj.core.data.MapEntry;
 import org.junit.Test;
 

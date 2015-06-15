@@ -5,7 +5,6 @@
  */
 package es.jacsoyyo.chesschallenge;
 
-import static org.assertj.core.api.Assertions.*;
 import org.junit.Ignore;
 
 import org.junit.Test;
