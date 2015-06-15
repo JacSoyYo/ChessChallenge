@@ -36,25 +36,23 @@ public class BoardTest {
 
     @Test
     public void testPlaceKingPosition4on3x3board() throws Exception {
-        System.out.println("placePiece");
-        Piece piece = new King();
+        Piece king = new King();
         Integer position = 4;
         Board board = new Board(3, 3);
         List<Integer> safeSquares = new ArrayList<>();
         safeSquares.addAll(board.getSquares());
         Map<Integer, Piece> placedPieces = new HashMap<>();
         
-        board.placePiece(piece, position, safeSquares, placedPieces);
+        board.placePiece(king, position, safeSquares, placedPieces);
         
         assertThat(safeSquares).containsOnly(4);
         assertThat(board.getSafeSquares()).containsOnly(4);
-        assertThat(board.getPlacedPieces()).containsOnly(MapEntry.entry(position, piece));
+        assertThat(board.getPlacedPieces()).containsOnly(MapEntry.entry(position, king));
     }
     
     @Test
     public void testPlaceKingPosition4on3x3boardThreatensPiece() throws Exception {
-        System.out.println("placePiece");
-        Piece piece = new King();
+        Piece king = new King();
         Integer position = 4;
         List<Integer> safeSquares = new ArrayList<>();
         Board board = new Board(3, 3);
@@ -64,7 +62,48 @@ public class BoardTest {
         safeSquares.remove(0);
         
         
-        assertThatThrownBy(() ->{ board.placePiece(piece, position, safeSquares, placedPieces);}).isInstanceOf(ThreatensOccupiedSquare.class);
+        assertThatThrownBy(() ->{ board.placePiece(king, position, safeSquares, placedPieces);}).isInstanceOf(ThreatensOccupiedSquare.class);
         
+    }
+    
+    @Test
+    public void testPushAndPopBoardState(){
+        Piece king = new King();
+        Board board = new Board(3, 3);
+        List<Integer> safeSquares = new ArrayList<>();
+        safeSquares.addAll(board.getSquares());
+        Map<Integer, Piece> placedPieces = new HashMap<>();
+        
+        board.placePiece(king, 0, safeSquares, placedPieces);
+        placedPieces.put(0, king);
+        
+        assertThat(safeSquares).containsOnly(0, 2, 5, 6, 7, 8);
+        assertThat(placedPieces).containsOnly(MapEntry.entry(0, king));
+        assertThat(board.getSafeSquares()).containsOnly(0, 2, 5, 6, 7, 8);
+        assertThat(board.getPlacedPieces()).containsOnly(MapEntry.entry(0, king));
+        
+        board.pushState();
+        
+        board.placePiece(king, 8, safeSquares, placedPieces);
+        placedPieces.put(8, king);
+        
+        assertThat(safeSquares).containsOnly(0, 2, 6, 8);
+        assertThat(board.getSafeSquares()).containsOnly(0, 2, 6, 8);
+        assertThat(board.getPlacedPieces()).containsOnly(MapEntry.entry(0, king), MapEntry.entry(8, king));
+        
+        board.popState();
+        
+        assertThat(safeSquares).containsOnly(0, 2, 6, 8);
+        assertThat(placedPieces).containsOnly(MapEntry.entry(0, king), MapEntry.entry(8, king));        
+        assertThat(board.getSafeSquares()).containsOnly(0, 2, 5, 6, 7, 8);
+        assertThat(board.getPlacedPieces()).containsOnly(MapEntry.entry(0, king));
+
+    }
+    
+    @Test
+    public void testPopBoardWithoutPushThrowsNoSuchElementException(){
+        Board board = new Board(3, 3);
+        
+        assertThatThrownBy(() ->{ board.popState();}).isInstanceOf(java.util.NoSuchElementException.class);
     }
 }

@@ -1,8 +1,10 @@
 package es.jacsoyyo.chesschallenge;
 
 import es.jacsoyyo.chesschallenge.pieces.Piece;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,8 +19,9 @@ public class Board {
     private int rows;
     private int columns;
 
-    private final List<Integer> safeSquares;
-    private Map<Integer, Piece> placedPieces;
+    private State state;
+    
+    private Deque<State> savedStates;
     
     /**
      * Creates a new board with the indicated dimensions
@@ -30,15 +33,19 @@ public class Board {
         this.rows = rows;
         this.columns = columns;
 
+        this.savedStates = new ArrayDeque<State>();
+        
+        this.state = new State();
+        
         // All squares are safe
-        safeSquares = new ArrayList<>(rows * columns);
+        this.state.safeSquares = new ArrayList<>(rows * columns);
         for (int row = 0; row < rows; row++) {
             for (int column = 0; column < columns; column++) {
-                safeSquares.add(column + row * columns);
+                this.state.safeSquares.add(column + row * columns);
             }
         }
 
-        placedPieces = new HashMap<>();
+        this.state.placedPieces = new HashMap<>();
     }
 
     /**
@@ -47,15 +54,15 @@ public class Board {
      * @return list of squares positions (starting at 0)
      */
     public List<Integer> getSquares() {
-        return Collections.unmodifiableList(safeSquares);
+        return Collections.unmodifiableList(this.state.safeSquares);
     }
 
     public List<Integer> getSafeSquares() {
-        return Collections.unmodifiableList(safeSquares);
+        return Collections.unmodifiableList(this.state.safeSquares);
     }
 
     public Map<Integer, Piece> getPlacedPieces() {
-        return placedPieces;
+        return this.state.placedPieces;
     }
 
     /**
@@ -72,7 +79,7 @@ public class Board {
             throw new ThreatensOccupiedSquare();
         }
         safeSquares.remove(new Integer(position));
-        this.safeSquares.remove(new Integer(position));
+        this.state.safeSquares.remove(new Integer(position));
     }
 
     /**
@@ -90,7 +97,27 @@ public class Board {
         int row = position / rows;
         int column = position - (row * columns);        
         piece.visitPossibleMoves(row, column, rows, columns, p -> updateSquares(p, safeSquares, placedPieces));
-        this.placedPieces.put(position, piece);
+        this.state.placedPieces.put(position, piece);
     }
 
+    public void pushState(){
+        State stateCopy = this.state.cloneState();
+        savedStates.push(stateCopy);
+    }
+    
+    public void popState(){
+        this.state = savedStates.pop();
+    }
+    
+    private class State {
+        private Map<Integer, Piece> placedPieces;
+        private List<Integer> safeSquares;
+        
+        public State cloneState(){
+            State newState = new State();
+            newState.placedPieces = new HashMap<>(placedPieces);
+            newState.safeSquares = new ArrayList<>(safeSquares);
+            return newState;
+        }
+    }
 }
