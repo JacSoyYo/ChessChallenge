@@ -2,6 +2,7 @@ package es.jacsoyyo.chesschallenge;
 
 import es.jacsoyyo.chesschallenge.pieces.Piece;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,7 +17,7 @@ public class Board {
     private int rows;
     private int columns;
 
-    private final List<Integer> squares;
+    private final List<Integer> safeSquares;
     private Map<Integer, Piece> placedPieces;
     
     /**
@@ -30,10 +31,10 @@ public class Board {
         this.columns = columns;
 
         // All squares are safe
-        squares = new ArrayList<>(rows * columns);
+        safeSquares = new ArrayList<>(rows * columns);
         for (int row = 0; row < rows; row++) {
             for (int column = 0; column < columns; column++) {
-                squares.add(column + row * columns);
+                safeSquares.add(column + row * columns);
             }
         }
 
@@ -46,7 +47,11 @@ public class Board {
      * @return list of squares positions (starting at 0)
      */
     public List<Integer> getSquares() {
-        return squares;
+        return Collections.unmodifiableList(safeSquares);
+    }
+
+    public List<Integer> getSafeSquares() {
+        return Collections.unmodifiableList(safeSquares);
     }
 
     public Map<Integer, Piece> getPlacedPieces() {
@@ -67,6 +72,7 @@ public class Board {
             throw new ThreatensOccupiedSquare();
         }
         safeSquares.remove(new Integer(position));
+        this.safeSquares.remove(new Integer(position));
     }
 
     /**

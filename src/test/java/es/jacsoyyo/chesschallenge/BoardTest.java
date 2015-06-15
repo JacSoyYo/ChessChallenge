@@ -24,12 +24,14 @@ import org.junit.Test;
 public class BoardTest {
     
     @Test
-    public void testGetSquares() {
+    public void testBoardInitialization() {
         Board board = new Board(3, 3);
         
         List<Integer> result = board.getSquares();
         
         assertThat(result).containsOnly(0, 1, 2, 3, 4, 5, 6, 7, 8);
+        assertThat(board.getSafeSquares()).containsOnly(0, 1, 2, 3, 4, 5, 6, 7, 8);
+        assertThat(board.getPlacedPieces()).isEmpty();
     }
 
     @Test
@@ -45,6 +47,7 @@ public class BoardTest {
         board.placePiece(piece, position, safeSquares, placedPieces);
         
         assertThat(safeSquares).containsOnly(4);
+        assertThat(board.getSafeSquares()).containsOnly(4);
         assertThat(board.getPlacedPieces()).containsOnly(MapEntry.entry(position, piece));
     }
     

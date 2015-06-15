@@ -35,7 +35,7 @@ public class SolutionFinder {
      */
     public void findSolutions(SolutionHandler solutionHandler) {
 
-        List<Integer> safeSquares = board.getSquares();
+        List<Integer> safeSquares = new ArrayList(board.getSquares());
         Map<Integer, Piece> candidate = new HashMap<>(pieces.size());
 
         // Try to place pieces
