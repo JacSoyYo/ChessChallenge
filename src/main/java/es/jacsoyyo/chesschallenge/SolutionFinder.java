@@ -15,7 +15,8 @@ public class SolutionFinder {
 
     private final Board board;
     private final List<Piece> pieces;
-
+    private SolutionHandler solutionHandler;
+    
     /**
      * Creates a new finder
      *
@@ -35,11 +36,13 @@ public class SolutionFinder {
      */
     public void findSolutions(SolutionHandler solutionHandler) {
 
+        this.solutionHandler = solutionHandler;
+        
         List<Integer> safeSquares = new ArrayList(board.getSquares());
         Map<Integer, Piece> candidate = new HashMap<>(pieces.size());
 
         // Try to place pieces
-        placePieces(pieces, safeSquares, candidate, new HashMap<>(), solutionHandler);
+        placePieces(pieces, safeSquares, candidate, new HashMap<>());
     }
 
     /**
@@ -52,7 +55,7 @@ public class SolutionFinder {
      * @param triedPiecePosition higher already position tried for each piece (to avoid duplicates)
      * @param solutionHandler called for every solution
      */
-    private void placePieces(List<Piece> pieces, List<Integer> safeSquares, Map<Integer, Piece> candidate, Map<Piece, Integer> triedPiecePosition, SolutionHandler solutionHandler) {
+    private void placePieces(List<Piece> pieces, List<Integer> safeSquares, Map<Integer, Piece> candidate, Map<Piece, Integer> triedPiecePosition) {
         Piece piece = pieces.get(0);
         List<Piece> remainingPieces = new ArrayList<>(pieces);
         remainingPieces.remove(0);
@@ -70,10 +73,10 @@ public class SolutionFinder {
                     newCandidate.put(candidateSquare, piece);
                     if (!remainingPieces.isEmpty()) {
                         // try to place remaining pieces
-                        placePieces(remainingPieces, candidateSafeSquares, newCandidate, newTriedPiecePosition, solutionHandler);
+                        placePieces(remainingPieces, candidateSafeSquares, newCandidate, newTriedPiecePosition);
                     } else {
                         // we got to a solution
-                        solutionHandler.handleSolution(newCandidate);
+                        this.solutionHandler.handleSolution(newCandidate);
                     }
                 } catch (ThreatensOccupiedSquare e) {
                     // candidate failed
