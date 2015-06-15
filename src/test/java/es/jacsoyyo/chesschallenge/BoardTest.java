@@ -49,6 +49,18 @@ public class BoardTest {
         assertThat(board.getSafeSquares()).containsOnly(4);
         assertThat(board.getPlacedPieces()).containsOnly(MapEntry.entry(position, king));
     }
+
+    @Test
+    public void newTestPlaceKingPosition4on3x3board() throws Exception {
+        Piece king = new King();
+        Integer position = 4;
+        Board board = new Board(3, 3);
+   
+        board.placePiece(king, position);
+        
+        assertThat(board.getSafeSquares()).containsOnly(4);
+        assertThat(board.getPlacedPieces()).containsOnly(MapEntry.entry(position, king));
+    }
     
     @Test
     public void testPlaceKingPosition4on3x3boardThreatensPiece() throws Exception {
@@ -61,9 +73,18 @@ public class BoardTest {
         placedPieces.put(0, new Rook());
         safeSquares.remove(0);
         
+        assertThatThrownBy(() ->{ board.placePiece(king, position, safeSquares, placedPieces);}).isInstanceOf(ThreatensOccupiedSquare.class);        
+    }
+    
+    @Test
+    public void newTestPlaceKingPosition4on3x3boardThreatensPiece() throws Exception {
+        Piece king = new King();
+        Integer position = 4;
+        Board board = new Board(3, 3);
+
+        board.placePiece(new Rook(), 0);
         
-        assertThatThrownBy(() ->{ board.placePiece(king, position, safeSquares, placedPieces);}).isInstanceOf(ThreatensOccupiedSquare.class);
-        
+        assertThatThrownBy(() ->{ board.placePiece(king, position);}).isInstanceOf(ThreatensOccupiedSquare.class);        
     }
     
     @Test
@@ -100,6 +121,29 @@ public class BoardTest {
 
     }
     
+    @Test
+    public void newTestPushAndPopBoardState(){
+        Piece king = new King();
+        Board board = new Board(3, 3);
+        
+        board.placePiece(king, 0);
+        
+        assertThat(board.getSafeSquares()).containsOnly(0, 2, 5, 6, 7, 8);
+        assertThat(board.getPlacedPieces()).containsOnly(MapEntry.entry(0, king));
+        
+        board.pushState();
+        
+        board.placePiece(king, 8);
+        
+        assertThat(board.getSafeSquares()).containsOnly(0, 2, 6, 8);
+        assertThat(board.getPlacedPieces()).containsOnly(MapEntry.entry(0, king), MapEntry.entry(8, king));
+        
+        board.popState();
+             
+        assertThat(board.getSafeSquares()).containsOnly(0, 2, 5, 6, 7, 8);
+        assertThat(board.getPlacedPieces()).containsOnly(MapEntry.entry(0, king));
+
+    }
     @Test
     public void testPopBoardWithoutPushThrowsNoSuchElementException(){
         Board board = new Board(3, 3);

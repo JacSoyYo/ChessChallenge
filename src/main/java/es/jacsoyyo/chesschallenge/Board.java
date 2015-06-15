@@ -82,6 +82,13 @@ public class Board {
         this.state.safeSquares.remove(new Integer(position));
     }
 
+    private void updateSquares(int position) {
+        if (this.state.placedPieces.keySet().contains(position)) {
+            throw new ThreatensOccupiedSquare();
+        }
+        this.state.safeSquares.remove(new Integer(position));
+    }
+
     /**
      * Places the piece on the square, removing threatened squares from remining
      * safe squares. Throws an exception if the piece threatens an already
@@ -100,9 +107,16 @@ public class Board {
         this.state.placedPieces.put(position, piece);
     }
 
+    public void placePiece(Piece piece, int position) {
+        int row = position / rows;
+        int column = position - (row * columns);        
+        piece.visitPossibleMoves(row, column, rows, columns, p -> updateSquares(p));
+        this.state.placedPieces.put(position, piece);
+    }
+
     public void pushState(){
-        State stateCopy = this.state.cloneState();
-        savedStates.push(stateCopy);
+        savedStates.push(this.state);
+        this.state = this.state.cloneState();
     }
     
     public void popState(){
