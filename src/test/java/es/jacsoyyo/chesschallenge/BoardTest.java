@@ -58,7 +58,7 @@ public class BoardTest {
    
         board.placePiece(king, position);
         
-        assertThat(board.getSafeSquares()).containsOnly(4);
+        assertThat(board.getSafeSquares()).isEmpty();;
         assertThat(board.getPlacedPieces()).containsOnly(MapEntry.entry(position, king));
     }
     
@@ -128,19 +128,19 @@ public class BoardTest {
         
         board.placePiece(king, 0);
         
-        assertThat(board.getSafeSquares()).containsOnly(0, 2, 5, 6, 7, 8);
+        assertThat(board.getSafeSquares()).containsOnly(2, 5, 6, 7, 8);
         assertThat(board.getPlacedPieces()).containsOnly(MapEntry.entry(0, king));
         
         board.pushState();
         
         board.placePiece(king, 8);
         
-        assertThat(board.getSafeSquares()).containsOnly(0, 2, 6, 8);
+        assertThat(board.getSafeSquares()).containsOnly(2, 6);
         assertThat(board.getPlacedPieces()).containsOnly(MapEntry.entry(0, king), MapEntry.entry(8, king));
         
         board.popState();
              
-        assertThat(board.getSafeSquares()).containsOnly(0, 2, 5, 6, 7, 8);
+        assertThat(board.getSafeSquares()).containsOnly(2, 5, 6, 7, 8);
         assertThat(board.getPlacedPieces()).containsOnly(MapEntry.entry(0, king));
 
     }

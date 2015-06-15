@@ -112,6 +112,7 @@ public class Board {
         int column = position - (row * columns);        
         piece.visitPossibleMoves(row, column, rows, columns, p -> updateSquares(p));
         this.state.placedPieces.put(position, piece);
+        this.state.safeSquares.remove(new Integer(position));
     }
 
     public void pushState(){
