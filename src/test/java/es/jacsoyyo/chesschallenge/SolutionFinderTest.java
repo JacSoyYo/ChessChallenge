@@ -1,9 +1,9 @@
 package es.jacsoyyo.chesschallenge;
 
-import es.jacsoyyo.chesschallenge.pieces.Knight;
-import es.jacsoyyo.chesschallenge.pieces.King;
-import es.jacsoyyo.chesschallenge.pieces.Piece;
 import es.jacsoyyo.chesschallenge.pieces.Bishop;
+import es.jacsoyyo.chesschallenge.pieces.King;
+import es.jacsoyyo.chesschallenge.pieces.Knight;
+import es.jacsoyyo.chesschallenge.pieces.Piece;
 import es.jacsoyyo.chesschallenge.pieces.Queen;
 import es.jacsoyyo.chesschallenge.pieces.Rook;
 import static org.assertj.core.api.Assertions.*;
@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -50,6 +51,19 @@ public class SolutionFinderTest {
         assertThat(solutionCounter.get()).isEqualTo(4);
     }
 
+    @Test
+    public void test2Kings1Rook3x3boardInDisorder() {
+        int rows = 3;
+        int columns = 3;
+        List<Piece> pieces = new ArrayList<>(Arrays.asList(new King(), new Rook(), new King()));
+        SolutionFinder solutionFinder = new SolutionFinder(rows, columns, pieces);
+        final AtomicInteger solutionCounter = new AtomicInteger(0);
+        
+        solutionFinder.findSolutions(c -> { solutionCounter.incrementAndGet(); });
+        
+        assertThat(solutionCounter.get()).isEqualTo(4);
+    }
+    
     @Test
     public void test2Rooks4Knights4x4board() {
         int rows = 4;
